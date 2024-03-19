@@ -1,0 +1,299 @@
+[
+    {
+      "fabricationNumber": "FAB123",
+      "address": "Berlin, Germany",
+      "floorNumber": 5,
+      "deviceIdentificationNumber": "DIN456",
+      "manufacturerName": "Otis",
+      "productionYear": 2010,
+      "elevatorType": "Passenger",
+      "state": "operational",
+      "chart": {
+          "name": "door_cycle_count_over_time",
+          "data": [
+              {
+                  "time": "2023-10-05T00:00:00.000Z",
+                  "door_cycles_count": 845,
+                  "door_openings_count": 845,
+                  "door_closings_count": 872,
+                  "door_closed_count": 845,
+                  "door_opened_count": 845
+              },
+              {
+                  "time": "2023-10-06T00:00:00.000Z",
+                  "door_cycles_count": 908,
+                  "door_openings_count": 908,
+                  "door_closings_count": 935,
+                  "door_closed_count": 908,
+                  "door_opened_count": 908
+              },
+              {
+                  "time": "2023-10-07T00:00:00.000Z",
+                  "door_cycles_count": 621,
+                  "door_openings_count": 621,
+                  "door_closings_count": 632,
+                  "door_closed_count": 621,
+                  "door_opened_count": 621
+              },
+              {
+                  "time": "2023-10-08T00:00:00.000Z",
+                  "door_cycles_count": 535,
+                  "door_openings_count": 535,
+                  "door_closings_count": 542,
+                  "door_closed_count": 535,
+                  "door_opened_count": 535
+              },
+              {
+                  "time": "2023-10-09T00:00:00.000Z",
+                  "door_cycles_count": 898,
+                  "door_openings_count": 898,
+                  "door_closings_count": 915,
+                  "door_closed_count": 898,
+                  "door_opened_count": 898
+              },
+              {
+                  "time": "2023-10-10T00:00:00.000Z",
+                  "door_cycles_count": 925,
+                  "door_openings_count": 925,
+                  "door_closings_count": 957,
+                  "door_closed_count": 925,
+                  "door_opened_count": 925
+              },
+              {
+                  "time": "2023-10-11T00:00:00.000Z",
+                  "door_cycles_count": 961,
+                  "door_openings_count": 961,
+                  "door_closings_count": 995,
+                  "door_closed_count": 961,
+                  "door_opened_count": 961
+              },
+              {
+                  "time": "2023-10-12T00:00:00.000Z",
+                  "door_cycles_count": 931,
+                  "door_openings_count": 931,
+                  "door_closings_count": 956,
+                  "door_closed_count": 931,
+                  "door_opened_count": 931
+              },
+              {
+                  "time": "2023-10-13T00:00:00.000Z",
+                  "door_cycles_count": 917,
+                  "door_openings_count": 917,
+                  "door_closings_count": 945,
+                  "door_closed_count": 917,
+                  "door_opened_count": 917
+              },
+              {
+                  "time": "2023-10-14T00:00:00.000Z",
+                  "door_cycles_count": 648,
+                  "door_openings_count": 648,
+                  "door_closings_count": 662,
+                  "door_closed_count": 648,
+                  "door_opened_count": 648
+              },
+              {
+                  "time": "2023-10-15T00:00:00.000Z",
+                  "door_cycles_count": 561,
+                  "door_openings_count": 561,
+                  "door_closings_count": 569,
+                  "door_closed_count": 561,
+                  "door_opened_count": 561
+              },
+              {
+                  "time": "2023-10-16T00:00:00.000Z",
+                  "door_cycles_count": 857,
+                  "door_openings_count": 857,
+                  "door_closings_count": 881,
+                  "door_closed_count": 857,
+                  "door_opened_count": 857
+              },
+              {
+                  "time": "2023-10-17T00:00:00.000Z",
+                  "door_cycles_count": 938,
+                  "door_openings_count": 938,
+                  "door_closings_count": 958,
+                  "door_closed_count": 938,
+                  "door_opened_count": 938
+              },
+              {
+                  "time": "2023-10-18T00:00:00.000Z",
+                  "door_cycles_count": 885,
+                  "door_openings_count": 885,
+                  "door_closings_count": 917,
+                  "door_closed_count": 885,
+                  "door_opened_count": 885
+              }
+          ]
+      }
+    },
+    {
+      "fabricationNumber": "FAB124",
+      "address": "Munich, Germany",
+      "floorNumber": 3,
+      "deviceIdentificationNumber": "DIN457",
+      "manufacturerName": "Schindler",
+      "productionYear": 2012,
+      "elevatorType": "Freight",
+      "state": "warning",
+      "warningMessage": "Maintenance due soon"
+    },
+    {
+      "fabricationNumber": "FAB125",
+      "address": "Hamburg, Germany",
+      "floorNumber": 10,
+      "deviceIdentificationNumber": "DIN458",
+      "manufacturerName": "KONE",
+      "productionYear": 2015,
+      "elevatorType": "Passenger",
+      "state": "out-of-order",
+      "reason": "Mechanical failure"
+    },{
+      "fabricationNumber": "FAB141",
+      "address": "Wiesbaden, Germany",
+      "floorNumber": 4,
+      "deviceIdentificationNumber": "DIN474",
+      "manufacturerName": "Otis",
+      "productionYear": 2031,
+      "elevatorType": "Passenger",
+      "state": "operational",
+      "chart": {
+          "name": "door_cycle_count_over_time",
+          "data": [
+              {
+                  "time": "2023-10-05T00:00:00.000Z",
+                  "door_cycles_count": 845,
+                  "door_openings_count": 845,
+                  "door_closings_count": 872,
+                  "door_closed_count": 845,
+                  "door_opened_count": 845
+              },
+              {
+                  "time": "2023-10-06T00:00:00.000Z",
+                  "door_cycles_count": 908,
+                  "door_openings_count": 908,
+                  "door_closings_count": 935,
+                  "door_closed_count": 908,
+                  "door_opened_count": 908
+              },
+              {
+                  "time": "2023-10-07T00:00:00.000Z",
+                  "door_cycles_count": 621,
+                  "door_openings_count": 621,
+                  "door_closings_count": 632,
+                  "door_closed_count": 621,
+                  "door_opened_count": 621
+              },
+              {
+                  "time": "2023-10-08T00:00:00.000Z",
+                  "door_cycles_count": 535,
+                  "door_openings_count": 535,
+                  "door_closings_count": 542,
+                  "door_closed_count": 535,
+                  "door_opened_count": 535
+              },
+              {
+                  "time": "2023-10-09T00:00:00.000Z",
+                  "door_cycles_count": 898,
+                  "door_openings_count": 898,
+                  "door_closings_count": 915,
+                  "door_closed_count": 898,
+                  "door_opened_count": 898
+              },
+              {
+                  "time": "2023-10-10T00:00:00.000Z",
+                  "door_cycles_count": 925,
+                  "door_openings_count": 925,
+                  "door_closings_count": 957,
+                  "door_closed_count": 925,
+                  "door_opened_count": 925
+              },
+              {
+                  "time": "2023-10-11T00:00:00.000Z",
+                  "door_cycles_count": 961,
+                  "door_openings_count": 961,
+                  "door_closings_count": 995,
+                  "door_closed_count": 961,
+                  "door_opened_count": 961
+              },
+              {
+                  "time": "2023-10-12T00:00:00.000Z",
+                  "door_cycles_count": 931,
+                  "door_openings_count": 931,
+                  "door_closings_count": 956,
+                  "door_closed_count": 931,
+                  "door_opened_count": 931
+              },
+              {
+                  "time": "2023-10-13T00:00:00.000Z",
+                  "door_cycles_count": 917,
+                  "door_openings_count": 917,
+                  "door_closings_count": 945,
+                  "door_closed_count": 917,
+                  "door_opened_count": 917
+              },
+              {
+                  "time": "2023-10-14T00:00:00.000Z",
+                  "door_cycles_count": 648,
+                  "door_openings_count": 648,
+                  "door_closings_count": 662,
+                  "door_closed_count": 648,
+                  "door_opened_count": 648
+              },
+              {
+                  "time": "2023-10-15T00:00:00.000Z",
+                  "door_cycles_count": 561,
+                  "door_openings_count": 561,
+                  "door_closings_count": 569,
+                  "door_closed_count": 561,
+                  "door_opened_count": 561
+              },
+              {
+                  "time": "2023-10-16T00:00:00.000Z",
+                  "door_cycles_count": 857,
+                  "door_openings_count": 857,
+                  "door_closings_count": 881,
+                  "door_closed_count": 857,
+                  "door_opened_count": 857
+              },
+              {
+                  "time": "2023-10-17T00:00:00.000Z",
+                  "door_cycles_count": 938,
+                  "door_openings_count": 938,
+                  "door_closings_count": 958,
+                  "door_closed_count": 938,
+                  "door_opened_count": 938
+              },
+              {
+                  "time": "2023-10-18T00:00:00.000Z",
+                  "door_cycles_count": 885,
+                  "door_openings_count": 885,
+                  "door_closings_count": 917,
+                  "door_closed_count": 885,
+                  "door_opened_count": 885
+              }
+          ]
+      }
+    },
+    {
+      "fabricationNumber": "FAB142",
+      "address": "Munster, Germany",
+      "floorNumber": 2,
+      "deviceIdentificationNumber": "DIN475",
+      "manufacturerName": "Schindler",
+      "productionYear": 2032,
+      "elevatorType": "Freight",
+      "state": "warning",
+      "warningMessage": "Regular maintenance required"
+    },
+    {
+      "fabricationNumber": "FAB143",
+      "address": "Gelsenkirchen, Germany",
+      "floorNumber": 7,
+      "deviceIdentificationNumber": "DIN476",
+      "manufacturerName": "KONE",
+      "productionYear": 2033,
+      "elevatorType": "Passenger",
+      "state": "out-of-order",
+      "reason": "Cable malfunction detected"
+    }
+  ]
