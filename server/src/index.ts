@@ -2,7 +2,7 @@ import express, {Express, Request, Response, NextFunction} from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { elevatorsRouter } from './routes/elevatorsRouter';
-import { auth } from 'express-openid-connect';
+import { auth, requiresAuth } from 'express-openid-connect';
 
 // Load environment variables
 dotenv.config();
@@ -29,8 +29,9 @@ mongoose.connection.on('error', (error: Error) => console.error(error));
 
 // Middleware
 app.use(express.json());
-app.use('/', elevatorsRouter);
 app.use(auth(config));
+app.use(requiresAuth());
+app.use('/', elevatorsRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -43,6 +44,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 app.get('/', (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+  });
+
+//   Add the requiresAuth middleware for routes that require authentication. Any route using this middleware will check for a valid user session and, if one does not exist, it will redirect the user to log in.
+  app.get('/profile', requiresAuth(), (req, res) => {
+    res.send(JSON.stringify(req.oidc.user));
   });
 
 if (require.main === module) {
