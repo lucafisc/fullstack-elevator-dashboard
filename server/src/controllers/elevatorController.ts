@@ -37,7 +37,7 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
   if (!Object.values(stateEnum).includes(state)) {
     throw new Error("Invalid state");
   }
-  const elevators = await Elevator.find({ state: state });
+  const elevators = await Elevator.find({ 'operationalState.state': state });
   res.json(elevators);
 });
 
@@ -49,7 +49,7 @@ export const getElevatorsCountByState = asyncHandler(async (req, res) => {
   };
 
   const countPromises = (state: string) => {
-    return Elevator.countDocuments({ state });
+    return Elevator.countDocuments({ 'operationalState.state': state });
   };
 
   const functionMap = Object.values(stateEnum).map((state) =>
