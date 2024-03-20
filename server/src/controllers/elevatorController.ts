@@ -1,6 +1,5 @@
 import { Elevator, stateEnum } from "../db/elevator";
 import type { StateEnum } from "../db/elevator";
-import { Chart } from "../db/chart";
 import { RecentlyVisitedElevator } from "../db/recentlyViewed";
 import asyncHandler from "express-async-handler";
 

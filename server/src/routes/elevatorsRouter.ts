@@ -1,7 +1,6 @@
 import express from 'express';
 export const elevatorsRouter = express.Router();
 import { getElevators, getElevatorById, getElevatorsByState, getElevatorsCountByState, getRecentlyVisitedElevators } from '../controllers/elevatorController';
-import { requiresAuth } from 'express-openid-connect';
 
 // GET /elevators
 elevatorsRouter.get('/elevators', getElevators);
