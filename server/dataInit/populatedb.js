@@ -6,7 +6,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 console.log(process.cwd());
-const Elevator = require("../dist/db/elevators.js").Elevator;
+const Elevator = require("../dist/db/elevator.js").Elevator;
 const Chart = require("../dist/db/chart.js").Chart;
 const mongoDB = process.env.DB_URL;
 console.log("pwd", process.cwd());
@@ -30,22 +30,26 @@ async function populateDB() {
 
   for (const elevatorData of parsedData) {
     const elevatorDetail = {
-      fabricationNumber: elevatorData.fabricationNumber,
-      address: elevatorData.address,
-      floorNumber: elevatorData.floorNumber,
-      deviceIdentificationNumber: elevatorData.deviceIdentificationNumber,
-      manufacturerName: elevatorData.manufacturerName,
-      productionYear: elevatorData.productionYear,
-      elevatorType: elevatorData.elevatorType,
-      state: elevatorData.state,
-    }
+      specifications: {
+        fabricationNumber: elevatorData.fabricationNumber,
+        address: elevatorData.address,
+        deviceIdentificationNumber: elevatorData.deviceIdentificationNumber,
+        manufacturerName: elevatorData.manufacturerName,
+        productionYear: elevatorData.productionYear,
+        elevatorType: elevatorData.elevatorType,
+      },
+      operationalState: {
+        floorNumber: elevatorData.floorNumber,
+        state: elevatorData.state,
+      }
+    };
 
     if (elevatorData.warningMessage) {
-      elevatorDetail.warningMessage = elevatorData.warningMessage;
+      elevatorDetail.operationalState.warningMessage = elevatorData.warningMessage;
     }
 
     if (elevatorData.reason) {
-      elevatorDetail.reason = elevatorData.reason;
+      elevatorDetail.operationalState.reason = elevatorData.reason;
     }
 
     if (elevatorData.chart) {

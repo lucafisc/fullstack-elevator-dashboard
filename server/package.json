@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "devStart": "nodemon",
     "prepopulateDB": "npm run build",
-    "populateDB": "node dist/populate.js"
+    "populateDB": "node dataInit/populatedb.js"
   },
   "keywords": [],
   "author": "",
