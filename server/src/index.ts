@@ -1,23 +1,23 @@
-import express, {Express, Request, Response, NextFunction} from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import { elevatorsRouter } from './routes/elevatorsRouter';
+import express, { Express, Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import cors from "cors";
+import { elevatorsRouter } from "./routes/elevatorsRouter";
 
 // Load environment variables
 dotenv.config();
 const port = process.env.PORT || 3000;
 const mongoDB = process.env.DB_URL;
-const app : Express = express();
-
+const app: Express = express();
 
 // Connect to MongoDB
-mongoose.set('strictPopulate', false);
+mongoose.set("strictPopulate", false);
 mongoose.Promise = Promise;
 mongoose.connect(mongoDB);
-mongoose.connection.on('error', (error: Error) => console.error(error));
-
+mongoose.connection.on("error", (error: Error) => console.error(error));
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 // app.use(auth(config));
 // app.use('/elevators', requiresAuth());
@@ -27,15 +27,18 @@ app.use(express.json());
 //   });
 
 // Routes
-app.use('/', elevatorsRouter);
+app.use("/", elevatorsRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    // CastError (refers to query parameter)
-    if (err instanceof mongoose.Error.CastError) {
-        return res.status(404).json({ message: 'Not found' });
-    } 
-    res.status(500).json({ message: err.message || 'Internal Server Error' });
+  if (err instanceof mongoose.Error.CastError) {
+    return res.status(404).json({ message: "Not found" });
+  }
+  res.status(500).json({ message: err.message || "Internal Server Error" });
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 // app.get('/', (req, res) => {
@@ -48,7 +51,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 //   });
 
 if (require.main === module) {
-    app.listen(port, () => console.log(`Server is running on port ${port}`));
+  app.listen(port, () => console.log(`Server is running on port ${port}`));
 }
 
 export default app;
