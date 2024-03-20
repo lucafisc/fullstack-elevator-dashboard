@@ -30,7 +30,13 @@ mongoose.connection.on('error', (error: Error) => console.error(error));
 // Middleware
 app.use(express.json());
 app.use(auth(config));
-app.use(requiresAuth());
+app.use('/elevators', requiresAuth());
+app.use((req, res, next) => {
+    console.log('Request:', req.oidc.user);
+    next();
+  });
+
+// Routes
 app.use('/', elevatorsRouter);
 
 // Error handling middleware
