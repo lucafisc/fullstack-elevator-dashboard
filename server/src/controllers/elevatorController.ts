@@ -45,18 +45,22 @@ export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
 export const getElevatorsByState = asyncHandler(async (req, res) => {
   const state = req.params.state as StateEnum;
   if (!Object.values(stateEnum).includes(state)) {
-    throw new Error("Invalid state");
+    res.status(404);
+    res.json({ message: "State not found" });
+    return;
   }
   const elevators = await Elevator.find({ 'operationalState.state': state });
   res.json(elevators);
 });
 
 // GET elevator by id
-export const getElevatorById = asyncHandler(async (req, res) => {
+export const getElevatorById = asyncHandler(async (req, res, next) => {
   const elevator = await Elevator.findById(req.params.id).populate("chart");
 
   if (!elevator) {
-    throw new Error("Elevator not found");
+    res.status(404);
+    res.json({ message: "Elevator not found" });
+    return;
   }
 
   const recentlyVisitedElevator = new RecentlyVisitedElevator({
@@ -64,11 +68,6 @@ export const getElevatorById = asyncHandler(async (req, res) => {
     visitedAt: new Date(),
   });
   await recentlyVisitedElevator.save();
-
-  console.log(elevator);
   res.json(elevator);
 });
-
-
-
 

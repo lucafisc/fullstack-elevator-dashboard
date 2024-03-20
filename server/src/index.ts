@@ -22,7 +22,10 @@ app.use('/', elevatorsRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack);
+    // CastError (refers to query parameter)
+    if (err instanceof mongoose.Error.CastError) {
+        return res.status(404).json({ message: 'Not found' });
+    } 
     res.status(500).json({ message: err.message || 'Internal Server Error' });
 });
 

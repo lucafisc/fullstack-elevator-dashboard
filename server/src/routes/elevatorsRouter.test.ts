@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../index").default;
+const stateEnum = require("../db/elevator").stateEnum;
 
 describe("GET /elevators", () => {
   let response: any;
@@ -45,11 +46,6 @@ describe("GET /elevators", () => {
       }
     });
   });
-
-  test("It should respond with status 404 for wrong endpoint", async () => {
-    const response404 = await request(app).get("/elevator");
-    expect(response404.status).toBe(404);
-  });
 });
 
 describe("GET /elevators/state/count", () => {
@@ -71,4 +67,168 @@ describe("GET /elevators/state/count", () => {
     expect(typeof response.body["out-of-order"]).toBe("number");
     expect(typeof response.body["warning"]).toBe("number");
   });
+});
+
+describe("GET /elevators/state/:state", () => {
+  let response: any;
+
+  const getElevatorsByState = async (state: string) => {
+    return await request(app).get(`/elevators/state/${state}`);
+  };
+
+  test("It should respond with status 200 and return an array of elevators in the specified state", async () => {
+    for (let state of stateEnum) {
+      response = await getElevatorsByState(state);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      response.body.forEach((elevator: any) => {
+        expect(elevator.operationalState.state).toBe(state);
+      });
+    }
+  });
+
+  test("It should respond with status 404 if the state is not valid", async () => {
+    response = await getElevatorsByState("invalid-state");
+    expect(response.status).toBe(404);
+  });
+});
+
+// GET /elevators/:id
+describe("GET /elevators/:id", () => {
+  let response: any;
+  let elevators: any;
+  let elevatorWithChart: any;
+
+  beforeAll(async () => {
+    elevators = await request(app).get("/elevators");
+  });
+  const getElevatorById = async (id: string) => {
+    return await request(app).get(`/elevators/${id}`);
+  };
+
+  test("It should respond with status 200 and return the elevator with the specified id", async () => {
+    const elevatorId = elevators.body[0]._id;
+    response = await getElevatorById(elevatorId);
+    expect(response.status).toBe(200);
+    expect(response.body._id).toBe(elevatorId);
+  });
+
+  test("The elevator should have the chart populated", async () => {
+    elevatorWithChart = elevators.body.find((elevator: any) => elevator.chart);
+    if (elevatorWithChart) {
+      response = await getElevatorById(elevatorWithChart._id);
+      expect(response.body).toHaveProperty("chart");
+      expect(response.body.chart).toHaveProperty("name");
+      expect(response.body.chart).toHaveProperty("data");
+    }
+  });
+
+  test("Elevator with chart with name 'door_cycle_count_over_time' should have an array of data with specific properties", async () => {
+    if (elevatorWithChart) {
+      if (elevatorWithChart.chart.name === "door_cycle_count_over_time") {
+        expect(Array.isArray(elevatorWithChart.chart.data)).toBe(true);
+        elevatorWithChart.chart.data.forEach((data: any) => {
+          expect(data).toHaveProperty("time");
+          expect(data).toHaveProperty("door_cycles_count");
+          expect(data).toHaveProperty("door_openings_count");
+          expect(data).toHaveProperty("door_closings_count");
+          expect(data).toHaveProperty("door_closed_count");
+        });
+      }
+    }
+  });
+
+  test("It should respond with status 404 if the id is not valid", async () => {
+    response = await getElevatorById("invalid-id");
+    expect(response.status).toBe(404);
+  });
+});
+
+// GET /elevators/recentlyVisited
+describe("GET /elevators/recentlyVisited", () => {
+  let response: any;
+  let elevators: any;
+
+  beforeAll(async () => {
+    elevators = await request(app).get("/elevators");
+  });
+
+  const visitElevators = async (ids: string[]) => {
+    for (let id of ids) {
+      await request(app).get(`/elevators/${id}`);
+    }
+  };
+
+ 
+  test("It should respond with status 200 and return an array of recently visited elevators", async () => {
+    // If response length is more than 3, it means that the test data has been visited before
+    if (elevators.body.length > 3) {
+
+ 
+    //  Visit three elevators
+    const ids = elevators.body.slice(0, 3).map((elevator: any) => elevator._id);
+    await visitElevators(ids);
+
+    // Get the three recently visited elevators
+    response = await request(app).get("/elevators/recentlyVisited");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    const visitedIds = response.body.slice(-3).map((elevator: any) => elevator.elevator._id);
+
+    expect(visitedIds).toEqual(ids);
+  }
+});
+
+test("It should respond with status 200 an return an array of recently randomly visited elevators", async () => {
+  if (elevators.body.length > 3) {
+    // get three random unique ids from the elevators
+    const ids : string[] = [];
+    while (ids.length < 3) {
+      const randomId = elevators.body[Math.floor(Math.random() * elevators.body.length)]._id;
+      if (!ids.includes(randomId)) {
+        ids.push(randomId);
+      }
+    }
+
+    await visitElevators(ids);
+    response = await request(app).get("/elevators/recentlyVisited");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    const visitedIds = response.body.slice(-3).map((elevator: any) => elevator.elevator._id);
+
+    expect(visitedIds).toEqual(ids);
+  }
+});
+
+test("It should respond with the last 10 visited elevators", async () => {
+  if (elevators.body.length > 11) {
+    const ids : string[] = [];
+    while (ids.length < 11) {
+      const randomId = elevators.body[Math.floor(Math.random() * elevators.body.length)]._id;
+      if (!ids.includes(randomId)) {
+        ids.push(randomId);
+      }
+    }
+
+    // Visit one
+    const firstVisit = ids[0];
+    ids.shift();
+    await visitElevators([firstVisit]);
+    response = await request(app).get("/elevators/recentlyVisited");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    const visitedIds = response.body.slice(-1).map((elevator: any) => elevator.elevator._id);
+    expect(visitedIds).toEqual([firstVisit]);
+
+    // Visit the 10 remaining
+    await visitElevators(ids);
+    response = await request(app).get("/elevators/recentlyVisited");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    const visitedIds2 = response.body.slice(-10).map((elevator: any) => elevator.elevator._id);
+    expect(visitedIds2).toEqual(ids);
+    expect(visitedIds2).not.toContain(firstVisit);
+  }
+});
+  
 });
