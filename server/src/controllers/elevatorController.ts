@@ -4,43 +4,13 @@ import { Chart } from "../db/chart";
 import { RecentlyVisitedElevator } from "../db/recentlyViewed";
 import asyncHandler from "express-async-handler";
 
+// GET all elevators
 export const getElevators = asyncHandler(async (req, res) => {
   const elevators = await Elevator.find();
   res.json(elevators);
 });
 
-export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
-  const recentlyVisitedElevators = await RecentlyVisitedElevator.find()
-    .populate("elevator");
-  res.json(recentlyVisitedElevators);
-})
-
-export const getElevatorById = asyncHandler(async (req, res) => {
-  const elevator = await Elevator.findById(req.params.id).populate("chart");
-
-  if (!elevator) {
-    throw new Error("Elevator not found");
-  }
-
-  const recentlyVisitedElevator = new RecentlyVisitedElevator({
-    elevator: req.params.id,
-    visitedAt: new Date(),
-  });
-  await recentlyVisitedElevator.save();
-
-  console.log(elevator);
-  res.json(elevator);
-});
-
-export const getElevatorsByState = asyncHandler(async (req, res) => {
-  const state = req.params.state as StateEnum;
-  if (!Object.values(stateEnum).includes(state)) {
-    throw new Error("Invalid state");
-  }
-  const elevators = await Elevator.find({ 'operationalState.state': state });
-  res.json(elevators);
-});
-
+// GET elevators count by state
 export const getElevatorsCountByState = asyncHandler(async (req, res) => {
   const countByState: Record<StateEnum, number> = {
     operational: 0,
@@ -63,3 +33,42 @@ export const getElevatorsCountByState = asyncHandler(async (req, res) => {
 
   res.json(countByState);
 });
+
+// GET recently visited elevators
+export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
+  const recentlyVisitedElevators = await RecentlyVisitedElevator.find()
+    .populate("elevator");
+  res.json(recentlyVisitedElevators);
+})
+
+// GET elevators by state
+export const getElevatorsByState = asyncHandler(async (req, res) => {
+  const state = req.params.state as StateEnum;
+  if (!Object.values(stateEnum).includes(state)) {
+    throw new Error("Invalid state");
+  }
+  const elevators = await Elevator.find({ 'operationalState.state': state });
+  res.json(elevators);
+});
+
+// GET elevator by id
+export const getElevatorById = asyncHandler(async (req, res) => {
+  const elevator = await Elevator.findById(req.params.id).populate("chart");
+
+  if (!elevator) {
+    throw new Error("Elevator not found");
+  }
+
+  const recentlyVisitedElevator = new RecentlyVisitedElevator({
+    elevator: req.params.id,
+    visitedAt: new Date(),
+  });
+  await recentlyVisitedElevator.save();
+
+  console.log(elevator);
+  res.json(elevator);
+});
+
+
+
+
