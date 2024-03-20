@@ -8,7 +8,7 @@
         "sourceMap": true,
         "noImplicitAny": true,
         "esModuleInterop": true,
-        "types": ["node", "express"],
+        "types": ["node", "express", "jest"],
         
     },
     "include": [
