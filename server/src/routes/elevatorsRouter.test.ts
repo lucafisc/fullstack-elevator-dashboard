@@ -124,6 +124,7 @@ describe("GET /elevators/:id", () => {
   });
 
   test("Elevator with chart with name 'door_cycle_count_over_time' should have an array of data with specific properties", async () => {
+    expect(response.status).toBe(200);
     if (elevatorWithChart) {
       if (elevatorWithChart.chart.name === "door_cycle_count_over_time") {
         expect(Array.isArray(elevatorWithChart.chart.data)).toBe(true);
@@ -161,10 +162,8 @@ describe("GET /elevators/recentlyVisited", () => {
 
  
   test("It should respond with status 200 and return an array of recently visited elevators", async () => {
-    // If response length is more than 3, it means that the test data has been visited before
+    expect(elevators.status).toBe(200);
     if (elevators.body.length > 3) {
-
- 
     //  Visit three elevators
     const ids = elevators.body.slice(0, 3).map((elevator: any) => elevator._id);
     await visitElevators(ids);
@@ -180,6 +179,7 @@ describe("GET /elevators/recentlyVisited", () => {
 });
 
 test("It should respond with status 200 an return an array of recently randomly visited elevators", async () => {
+  expect(elevators.status).toBe(200);
   if (elevators.body.length > 3) {
     // get three random unique ids from the elevators
     const ids : string[] = [];
@@ -201,6 +201,7 @@ test("It should respond with status 200 an return an array of recently randomly 
 });
 
 test("It should respond with the last 10 visited elevators", async () => {
+  expect(elevators.status).toBe(200);
   if (elevators.body.length > 11) {
     const ids : string[] = [];
     while (ids.length < 11) {
