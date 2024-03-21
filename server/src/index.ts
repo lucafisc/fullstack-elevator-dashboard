@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 const { expressjwt: jwt } = require("express-jwt");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
+import axios from "axios";
+import { getUserInfo } from "./controllers/userController";
 
 const jwksRsa = require("jwks-rsa");
 
@@ -30,12 +32,14 @@ const jwtCheck = jwt({
   audience: "this is a unique identifier",
   issuer: "https://dev-a0oir8yzhmnp7jh3.us.auth0.com/",
   algorithms: ["RS256"],
-});
+}).unless({ path: ["/"] });
 
 // Middleware
+app.use(jwtCheck);
 app.use(cors());
 app.use(express.json());
-app.use("/elevators", jwtCheck);
+
+app.use(getUserInfo);
 
 // Routes
 app.use("/", elevatorsRouter);
