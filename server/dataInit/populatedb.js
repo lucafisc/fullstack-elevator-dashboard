@@ -1,34 +1,42 @@
 #! /usr/bin/env node
-
-// Get arguments passed on command line
 require('dotenv').config()
 const fs = require("fs");
 const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
-console.log(process.cwd());
 const Elevator = require("../dist/db/elevator.js").Elevator;
 const Chart = require("../dist/db/chart.js").Chart;
-const mongoDB = process.env.DB_URL;
-console.log("pwd", process.cwd());
-console.log("mongoDB", mongoDB);
-console.log("chart", Chart);
+const User = require("../dist/db/user.js").User; // Import the User model
 
-main().catch((err) => console.log(err));
+const mongoDB = process.env.DB_URL;
 
 async function main() {
-  await mongoose.connect(mongoDB);
-  console.log("Connected to MongoDB");
-  await populateDB();
-  console.log("Populated DB");
-  mongoose.connection.close();
+  try {
+    await mongoose.connect(mongoDB);
+    console.log("Connected to MongoDB");
+
+    const userName = process.argv[2]; // Get the username from the command line argument
+    if (!userName) {
+      throw new Error("Username not provided.");
+    }
+
+    await populateDB(userName);
+    console.log("Populated DB");
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    mongoose.connection.close();
+  }
 }
 
-async function populateDB() {
-  console.log(process.cwd());
-  const data = fs.readFileSync("dataInit/data/skyward-peaks.json");
-  const parsedData = JSON.parse(data);
+async function populateDB(userName) {
+  const userData = fs.readFileSync(`dataInit/data/${userName}.json`);
+  const parsedUserData = JSON.parse(userData);
 
-  for (const elevatorData of parsedData) {
+  const user = await User.findOne({ "userInfo.email": `${userName}@test.com` });
+  if (!user) {
+    throw new Error(`User with email ${userName}@test.com not found.`);
+  }
+
+  for (const elevatorData of parsedUserData) {
     const elevatorDetail = {
       specifications: {
         fabricationNumber: elevatorData.fabricationNumber,
@@ -60,5 +68,11 @@ async function populateDB() {
 
     const elevator = new Elevator(elevatorDetail);
     await elevator.save();
+
+    user.elevators.push(elevator._id);
   }
+
+  await user.save();
 }
+
+main();
