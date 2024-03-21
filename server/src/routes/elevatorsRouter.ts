@@ -1,7 +1,8 @@
 import express from 'express';
 export const elevatorsRouter = express.Router();
 import { getElevators, getElevatorById, getElevatorsByState, getElevatorsCountByState, getRecentlyVisitedElevators } from '../controllers/elevatorController';
-
+// API versioning
+// DTO 
 // GET /elevators
 elevatorsRouter.get('/elevators', getElevators);
 
