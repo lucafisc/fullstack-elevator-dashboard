@@ -22,4 +22,24 @@ const ElevatorSchema = new mongoose.Schema({
   chart: { type: mongoose.Schema.Types.ObjectId, ref: Chart },
 });
 
+// export type of elevator, not interface
+
+export type ElevatorInterface = {
+  specifications: {
+    fabricationNumber: string;
+    address: string;
+    deviceIdentificationNumber: string;
+    manufacturerName: string;
+    productionYear: number;
+    elevatorType: string;
+  };
+  operationalState: {
+    floorNumber: number;
+    state: string;
+    warningMessage: string;
+    reason: string;
+  };
+  chart: mongoose.Schema.Types.ObjectId;
+};
+
 export const Elevator = mongoose.model("Elevator", ElevatorSchema);

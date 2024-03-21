@@ -3,11 +3,11 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 const { expressjwt: jwt } = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
 import axios from "axios";
 import { getUserInfo } from "./controllers/userController";
 
-const jwksRsa = require("jwks-rsa");
 
 // Load environment variables
 dotenv.config();
