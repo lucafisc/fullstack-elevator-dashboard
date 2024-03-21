@@ -2,7 +2,10 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+const { expressjwt: jwt } = require("express-jwt");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
+
+const jwksRsa = require("jwks-rsa");
 
 // Load environment variables
 dotenv.config();
@@ -16,15 +19,23 @@ mongoose.Promise = Promise;
 mongoose.connect(mongoDB);
 mongoose.connection.on("error", (error: Error) => console.error(error));
 
+// JWT middleware configuration
+const jwtCheck = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: "https://dev-a0oir8yzhmnp7jh3.us.auth0.com/.well-known/jwks.json",
+  }),
+  audience: "this is a unique identifier",
+  issuer: "https://dev-a0oir8yzhmnp7jh3.us.auth0.com/",
+  algorithms: ["RS256"],
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());
-// app.use(auth(config));
-// app.use('/elevators', requiresAuth());
-// app.use((req, res, next) => {
-//     console.log('Request:', req.oidc.user);
-//     next();
-//   });
+app.use("/elevators", jwtCheck);
 
 // Routes
 app.use("/", elevatorsRouter);
@@ -40,15 +51,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
-// app.get('/', (req, res) => {
-//     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-//   });
-
-// //   Add the requiresAuth middleware for routes that require authentication. Any route using this middleware will check for a valid user session and, if one does not exist, it will redirect the user to log in.
-//   app.get('/profile', requiresAuth(), (req, res) => {
-//     res.send(JSON.stringify(req.oidc.user));
-//   });
 
 if (require.main === module) {
   app.listen(port, () => console.log(`Server is running on port ${port}`));
