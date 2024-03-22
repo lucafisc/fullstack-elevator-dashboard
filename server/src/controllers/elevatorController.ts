@@ -51,12 +51,26 @@ export const getElevatorsCountByState = asyncHandler(async (req, res) => {
 // GET recently visited elevators
 export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
   const user = extractUserFromReq(req);
-  const recentElevators = user.recentlyViewed.map((entry) =>
-    entry.elevator.toString()
+  const recentElevators = user.recentlyViewed.map((entry) =>{
+ const newElev = {
+    elevator: entry.elevator.toString(),
+    visitedAt: entry.visitedAt
+  }
+  return newElev;}
   );
-  const elevators = await Elevator.find({ _id: { $in: recentElevators } });
+  
+  const populatedElevators = await Promise.all(recentElevators.map(async (entry) => {
+    const elevator = await Elevator.findById(entry.elevator).exec();
+    return {
+      elevator,
+      visitedAt: entry.visitedAt
+    };
+  }));
 
-  res.json(elevators);
+  // console.log("Recently visited elevators: ", recentElevators);
+
+
+  res.json(populatedElevators);
 });
 
 // GET elevators by state
@@ -78,7 +92,6 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
 // GET elevator by id
 export const getElevatorById = asyncHandler(async (req, res, next) => {
   const elevatorId = req.params.id;
-  console.log("Elevator id that was visited: ", elevatorId);
   const user = extractUserFromReq(req);
   const userElevatorsIds = user.elevators;
   const belongsToUser = userElevatorsIds.includes(elevatorId);
@@ -102,7 +115,7 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     const existingIndex = UserModel.recentlyViewed.findIndex(entry => entry.elevator.toString() === elevatorId);
     if (existingIndex !== -1) {
       // If elevator exists, remove it from current position and push it to the end
-      console.log("Removing elevator at index: ", existingIndex, " with id: ", elevatorId);
+      // console.log("Removing elevator at index: ", existingIndex, " with id: ", elevatorId);
       const existingEntry = UserModel.recentlyViewed.splice(existingIndex, 1)[0];
 
       existingEntry.visitedAt = visitedAt;
@@ -116,7 +129,7 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     }
   
     await UserModel.save();
-    console.log("UserModel after saving: ", UserModel.recentlyViewed);
+    // console.log("UserModel after saving: ", UserModel.recentlyViewed);
 
 
   res.json(elevator);
