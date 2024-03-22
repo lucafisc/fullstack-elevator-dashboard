@@ -38,7 +38,6 @@ const jwtCheck = jwt({
 app.use(jwtCheck);
 app.use(cors());
 app.use(express.json());
-
 app.use(getUserInfo);
 
 // Routes
