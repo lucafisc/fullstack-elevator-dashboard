@@ -7,7 +7,9 @@ export const getUserInfo = asyncHandler(async (req, res, next) => {
   const userId = req.auth.sub;
 
   // Check if user exists, if not create it
-  const user = await User.findOne({ "userInfo.auth0Id": userId }) as typeof User;
+  const user = (await User.findOne({
+    "userInfo.auth0Id": userId,
+  })) as typeof User;
   if (!user) {
     const accessToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
@@ -16,7 +18,7 @@ export const getUserInfo = asyncHandler(async (req, res, next) => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
     const newUser = response.data;
     await User.create({
@@ -36,14 +38,15 @@ export const getUserInfo = asyncHandler(async (req, res, next) => {
   next();
 });
 
-
 export const getTestUserInfo = asyncHandler(async (req, res, next) => {
   req.auth = {
     sub: process.env.TEST_USER_TOKEN,
-  }
+  };
 
   // Check if user exists, if not create it
-  const user = await User.findOne({ "userInfo.auth0Id": req.auth.sub }) as typeof User;
+  const user = (await User.findOne({
+    "userInfo.auth0Id": req.auth.sub,
+  })) as typeof User;
   if (!user) {
     const error = new Error("Test user not found");
     next(error);

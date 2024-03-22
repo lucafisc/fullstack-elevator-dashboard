@@ -8,7 +8,6 @@ import { elevatorsRouter } from "./routes/elevatorsRouter";
 import axios from "axios";
 import { getUserInfo, getTestUserInfo } from "./controllers/userController";
 
-
 // Load environment variables
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -39,7 +38,6 @@ app.use(cors());
 app.use("/elevators", jwtCheck);
 app.use("/elevators", getUserInfo);
 app.use("/test", getTestUserInfo);
-
 app.use(express.json());
 
 // Routes
