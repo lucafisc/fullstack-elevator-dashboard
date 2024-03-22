@@ -85,11 +85,13 @@ function App() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
 
+      });
+      
       const elevators = response.data;
       console.log("Elevators:", elevators);
       setElevators(elevators);
+
     } catch (error) {
       console.error("Error fetching elevators:", error);
       throw error;
@@ -118,8 +120,15 @@ function App() {
     }
   }
 
+  async function getTestElevators() {
+
+    const testResponse = await axios.get("http://localhost:3000/test");
+    console.log("Test Elevators:", testResponse.data);
+  }
+
   return (
     <>
+    <button onClick={getTestElevators}>TEST</button>
     <button onClick={getRecentlyVisitedElevators}>Get Recently Visited Elevators</button>
     <button onClick={getElevatorById}>Get Elevator by id</button>
     <button onClick={getElevatorsByState}>Get Elevators by state</button>
