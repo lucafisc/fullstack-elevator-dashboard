@@ -181,7 +181,6 @@ describe("GET /test/recentlyVisited", () => {
 test("It should respond with status 200 an return an array of recently randomly visited elevators", async () => {
   expect(elevators.status).toBe(200);
   if (elevators.body.length > 3) {
-    // get three random unique ids from the elevators
     const ids : string[] = [];
     while (ids.length < 3) {
       const randomId = elevators.body[Math.floor(Math.random() * elevators.body.length)]._id;
@@ -191,7 +190,6 @@ test("It should respond with status 200 an return an array of recently randomly 
     }
     await visitElevators(ids);
 
-    // Get the three recently visited elevators
     response = await request(app).get("/test/recentlyVisited");
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
@@ -200,4 +198,23 @@ test("It should respond with status 200 an return an array of recently randomly 
     expect(visitedElevators).toEqual(ids);
   }
 });
+
+  test("It should respond with status 200 and return the last 10 visited elevators", async () => {
+    expect(elevators.status).toBe(200);
+    if (elevators.body.length > 10) {
+      const ids = elevators.body.slice(0, 11).map((elevator: any) => elevator._id);
+      const firstVisitedId = ids[0];
+      const otherIds = ids.slice(1);
+      await visitElevators(ids);
+
+      response = await request(app).get("/test/recentlyVisited");
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      const visitedElevators = response.body.map((visited: any) => visited.elevator._id);
+
+      expect(visitedElevators).not.toContain(firstVisitedId);
+      expect(visitedElevators).toEqual(otherIds);
+      expect(visitedElevators.length).toBe(10);
+    }
+  });
 });

@@ -10,7 +10,6 @@ const extractUserFromReq = (req: Request) => {
   };
 };
 
-// Function to get user's elevators
 const getUserElevators = async (req: Request) => {
   const user = extractUserFromReq(req);
   const userElevatorsIds = user.elevators;
@@ -22,24 +21,19 @@ const getUserElevators = async (req: Request) => {
 export const getElevators = asyncHandler(async (req, res) => {
   const elevators = await getUserElevators(req);
 
-  if (elevators.length === 0) {
-    res.status(404).json({ message: "User not found or no elevators found" });
-    return;
-  }
-
   res.json(elevators);
 });
 
 // GET elevators count by state
 export const getElevatorsCountByState = asyncHandler(async (req, res) => {
+  const elevators = await getUserElevators(req);
+
+  // Count
   const countByState: Record<StateEnum, number> = {
     operational: 0,
     "out-of-order": 0,
     warning: 0,
   };
-
-  const elevators = await getUserElevators(req);
-
   elevators.forEach((elevator) => {
     const operationalState = elevator.operationalState.state;
     countByState[operationalState]++;
@@ -51,24 +45,21 @@ export const getElevatorsCountByState = asyncHandler(async (req, res) => {
 // GET recently visited elevators
 export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
   const user = extractUserFromReq(req);
-  const recentElevators = user.recentlyViewed.map((entry) =>{
- const newElev = {
+  const recentElevators = user.recentlyViewed.map((entry) => ({
     elevator: entry.elevator.toString(),
-    visitedAt: entry.visitedAt
-  }
-  return newElev;}
-  );
-  
-  const populatedElevators = await Promise.all(recentElevators.map(async (entry) => {
-    const elevator = await Elevator.findById(entry.elevator).exec();
-    return {
-      elevator,
-      visitedAt: entry.visitedAt
-    };
+    visitedAt: entry.visitedAt,
   }));
 
-  // console.log("Recently visited elevators: ", recentElevators);
-
+  // Populate elevators
+  const populatedElevators = await Promise.all(
+    recentElevators.map(async (entry) => {
+      const elevator = await Elevator.findById(entry.elevator).exec();
+      return {
+        elevator,
+        visitedAt: entry.visitedAt,
+      };
+    })
+  );
 
   res.json(populatedElevators);
 });
@@ -78,7 +69,7 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
   const state = req.params.state as StateEnum;
   if (!Object.values(stateEnum).includes(state)) {
     res.status(404);
-    res.json({ message: "State not found" });
+    res.json({ message: "Not a valid state" });
     return;
   }
 
@@ -86,6 +77,7 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
   const filteredElevators = elevators.filter(
     (elevator) => elevator.operationalState.state === state
   );
+
   res.json(filteredElevators);
 });
 
@@ -93,15 +85,14 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
 export const getElevatorById = asyncHandler(async (req, res, next) => {
   const elevatorId = req.params.id;
   const user = extractUserFromReq(req);
-  const userElevatorsIds = user.elevators;
-  const belongsToUser = userElevatorsIds.includes(elevatorId);
-
+  const belongsToUser = user.elevators.includes(elevatorId);
   if (!belongsToUser) {
     res.status(403);
     res.json({ message: "Elevator does not belong to user" });
     return;
   }
 
+  // Get elevator and populate chart
   const elevator = await Elevator.findById(elevatorId).populate("chart");
   if (!elevator) {
     res.status(404);
@@ -109,28 +100,33 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     return;
   }
 
-   const visitedAt = new Date();
-   const UserModel = await User.findOne({ "userInfo.auth0Id": req.auth.sub });
+  // Register visit
+  const visitedAt = new Date();
+  const UserModel = await User.findOne({ "userInfo.auth0Id": req.auth.sub });
+  const existingIndex = UserModel.recentlyViewed.findIndex(
+    (entry) => entry.elevator.toString() === elevatorId
+  );
+  if (existingIndex !== -1) {
+    // Existing elevator, update visitedAt and push to end
+    const existingEntry = UserModel.recentlyViewed.splice(existingIndex, 1)[0];
+    existingEntry.visitedAt = visitedAt;
+    UserModel.recentlyViewed.push(existingEntry);
+  } else {
+    // New elevator, push to end
+    UserModel.recentlyViewed.push({
+      elevator: elevatorId,
+      visitedAt: visitedAt,
+    });
+  }
+  // Keep only the last 10
+  const maxLength = 10;
+  if (UserModel.recentlyViewed.length > maxLength) {
+    const excess = UserModel.recentlyViewed.length - maxLength;
+    UserModel.recentlyViewed.splice(0, excess);
+  }
 
-    const existingIndex = UserModel.recentlyViewed.findIndex(entry => entry.elevator.toString() === elevatorId);
-    if (existingIndex !== -1) {
-      // If elevator exists, remove it from current position and push it to the end
-      // console.log("Removing elevator at index: ", existingIndex, " with id: ", elevatorId);
-      const existingEntry = UserModel.recentlyViewed.splice(existingIndex, 1)[0];
-
-      existingEntry.visitedAt = visitedAt;
-      UserModel.recentlyViewed.push(existingEntry);
-    } else {
-      // If elevator is not found, create a new entry
-      UserModel.recentlyViewed.push({
-        elevator: elevatorId,
-        visitedAt: visitedAt,
-      });
-    }
-  
-    await UserModel.save();
-    // console.log("UserModel after saving: ", UserModel.recentlyViewed);
-
+  // Register visit
+  await UserModel.save();
 
   res.json(elevator);
 });
