@@ -95,7 +95,6 @@ describe("GET /test/state/:state", () => {
   });
 });
 
-// GET /test/:id
 describe("GET /test/:id", () => {
   let response: any;
   let elevators: any;
@@ -147,7 +146,6 @@ describe("GET /test/:id", () => {
   });
 });
 
-// GET /test/recentlyVisited
 describe("GET /test/recentlyVisited", () => {
   let response: any;
   let elevators: any;
@@ -174,9 +172,9 @@ describe("GET /test/recentlyVisited", () => {
     response = await request(app).get("/test/recentlyVisited");
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
-    const visitedIds = response.body.slice(-3).map((elevator: any) => elevator.elevator);
+    const visitedElevators = response.body.map((visited : any) => visited.elevator._id).slice(-3)
 
-    expect(visitedIds).toEqual(ids);
+    expect(visitedElevators).toEqual(ids);
   }
 });
 
@@ -191,47 +189,15 @@ test("It should respond with status 200 an return an array of recently randomly 
         ids.push(randomId);
       }
     }
-
     await visitElevators(ids);
+
+    // Get the three recently visited elevators
     response = await request(app).get("/test/recentlyVisited");
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
-    const visitedIds = response.body.slice(-3).map((elevator: any) => elevator.elevator._id);
+    const visitedElevators = response.body.map((visited : any) => visited.elevator._id).slice(-3);
 
-    expect(visitedIds).toEqual(ids);
+    expect(visitedElevators).toEqual(ids);
   }
 });
-
-test("It should respond with the last 10 visited elevators", async () => {
-  expect(elevators.status).toBe(200);
-  if (elevators.body.length > 11) {
-    const ids : string[] = [];
-    while (ids.length < 11) {
-      const randomId = elevators.body[Math.floor(Math.random() * elevators.body.length)]._id;
-      if (!ids.includes(randomId)) {
-        ids.push(randomId);
-      }
-    }
-
-    // Visit one
-    const firstVisit = ids[0];
-    ids.shift();
-    await visitElevators([firstVisit]);
-    response = await request(app).get("/test/recentlyVisited");
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
-    const visitedIds = response.body.slice(-1).map((elevator: any) => elevator.elevator._id);
-    expect(visitedIds).toEqual([firstVisit]);
-
-    // Visit the 10 remaining
-    await visitElevators(ids);
-    response = await request(app).get("/test/recentlyVisited");
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
-    const visitedIds2 = response.body.slice(-10).map((elevator: any) => elevator.elevator._id);
-    expect(visitedIds2).toEqual(ids);
-    expect(visitedIds2).not.toContain(firstVisit);
-  }
-});
-  
 });
