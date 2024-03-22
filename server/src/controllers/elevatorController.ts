@@ -1,11 +1,8 @@
 import { User } from "../db/user";
 import { Elevator, stateEnum, ElevatorInterface } from "../db/elevator";
 import type { StateEnum } from "../db/elevator";
-import { RecentlyVisitedElevator } from "../db/recentlyViewed";
 import asyncHandler from "express-async-handler";
-import { get } from "axios";
 import { Request } from "express";
-import mongoose from "mongoose";
 
 const extractUserFromReq = (req: Request) => {
   return req.user as typeof User & { elevators: string[] } & {
@@ -98,21 +95,9 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     return;
   }
 
-  // Add elevator to recently visited
-  // const newRecentlyViewedEntry = new RecentlyVisitedElevator({
-  //   elevator: elevatorId,
-  //   visitedAt: new Date(),
-  // });
-  // const UserModel = await User.findOne({ "userInfo.auth0Id": req.auth.sub });
-  // UserModel.recentlyViewed.push(newRecentlyViewedEntry);
-  // await UserModel.save();
-
-
-   // Add elevator to recently visited
    const visitedAt = new Date();
    const UserModel = await User.findOne({ "userInfo.auth0Id": req.auth.sub });
 
-    // Check if elevator already exists in recentlyViewed array
     const existingIndex = UserModel.recentlyViewed.findIndex(entry => entry.elevator.toString() === elevatorId);
     if (existingIndex !== -1) {
       // If elevator exists, remove it from current position and push it to the end
