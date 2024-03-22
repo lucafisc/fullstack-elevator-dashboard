@@ -6,7 +6,7 @@ const { expressjwt: jwt } = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
 import axios from "axios";
-import { getUserInfo } from "./controllers/userController";
+import { getUserInfo, getTestUserInfo } from "./controllers/userController";
 
 
 // Load environment variables
@@ -35,13 +35,16 @@ const jwtCheck = jwt({
 }).unless({ path: ["/"] });
 
 // Middleware
-app.use(jwtCheck);
 app.use(cors());
+app.use("/elevators", jwtCheck);
+app.use("/elevators", getUserInfo);
+app.use("/test", getTestUserInfo);
+
 app.use(express.json());
-app.use(getUserInfo);
 
 // Routes
-app.use("/", elevatorsRouter);
+app.use("/elevators", elevatorsRouter);
+app.use("/test", elevatorsRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
