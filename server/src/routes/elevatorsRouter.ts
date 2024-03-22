@@ -1,19 +1,25 @@
-import express from 'express';
+import express from "express";
 export const elevatorsRouter = express.Router();
-import { getElevators, getElevatorById, getElevatorsByState, getElevatorsCountByState, getRecentlyVisitedElevators } from '../controllers/elevatorController';
+import {
+  getElevators,
+  getElevatorById,
+  getElevatorsByState,
+  getElevatorsCountByState,
+  getRecentlyVisitedElevators,
+} from "../controllers/elevatorController";
 // API versioning
-// DTO 
+// DTO
 // GET /
-elevatorsRouter.get('/', getElevators);
+elevatorsRouter.get("/", getElevators);
 
 // GET /state/count
-elevatorsRouter.get('/state/count', getElevatorsCountByState)
+elevatorsRouter.get("/state/count", getElevatorsCountByState);
 
 // GET /recentlyVisited
-elevatorsRouter.get('/recentlyVisited', getRecentlyVisitedElevators);
+elevatorsRouter.get("/recentlyVisited", getRecentlyVisitedElevators);
 
 // GET /state/:state
-elevatorsRouter.get('/state/:state', getElevatorsByState);
+elevatorsRouter.get("/state/:state", getElevatorsByState);
 
 // GET /:id
-elevatorsRouter.get('/:id', getElevatorById);
+elevatorsRouter.get("/:id", getElevatorById);

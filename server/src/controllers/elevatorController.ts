@@ -58,7 +58,7 @@ export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
         elevator,
         visitedAt: entry.visitedAt,
       };
-    })
+    }),
   );
 
   res.json(populatedElevators);
@@ -75,7 +75,7 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
 
   const elevators = await getUserElevators(req);
   const filteredElevators = elevators.filter(
-    (elevator) => elevator.operationalState.state === state
+    (elevator) => elevator.operationalState.state === state,
   );
 
   res.json(filteredElevators);
@@ -104,7 +104,7 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
   const visitedAt = new Date();
   const UserModel = await User.findOne({ "userInfo.auth0Id": req.auth.sub });
   const existingIndex = UserModel.recentlyViewed.findIndex(
-    (entry) => entry.elevator.toString() === elevatorId
+    (entry) => entry.elevator.toString() === elevatorId,
   );
   if (existingIndex !== -1) {
     // Existing elevator, update visitedAt and push to end

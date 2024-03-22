@@ -9,7 +9,8 @@
     "start": "node dist/index.js",
     "devStart": "nodemon",
     "prepopulateDB": "npm run build",
-    "populateDB": "node dataInit/populatedb.js"
+    "populateDB": "node dataInit/populatedb.js",
+    "format": "prettier --write ./src/**/*.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "dotenv": "^16.4.5",
     "jest": "^29.7.0",
     "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

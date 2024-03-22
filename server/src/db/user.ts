@@ -11,10 +11,12 @@ const UserSchema = new mongoose.Schema({
     emailVerified: { type: Boolean, default: false },
   },
   elevators: [{ type: mongoose.Schema.Types.ObjectId, ref: Elevator }],
-  recentlyViewed: [{
-    elevator: { type: mongoose.Schema.Types.ObjectId, ref: Elevator },
-    visitedAt: { type: Date, default: Date.now }
-  }],
+  recentlyViewed: [
+    {
+      elevator: { type: mongoose.Schema.Types.ObjectId, ref: Elevator },
+      visitedAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 export const User = mongoose.model("User", UserSchema);
