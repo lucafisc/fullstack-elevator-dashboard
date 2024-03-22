@@ -78,6 +78,7 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
 // GET elevator by id
 export const getElevatorById = asyncHandler(async (req, res, next) => {
   const elevatorId = req.params.id;
+  console.log("Elevator id that was visited: ", elevatorId);
   const user = extractUserFromReq(req);
   const userElevatorsIds = user.elevators;
   const belongsToUser = userElevatorsIds.includes(elevatorId);
@@ -101,13 +102,11 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     const existingIndex = UserModel.recentlyViewed.findIndex(entry => entry.elevator.toString() === elevatorId);
     if (existingIndex !== -1) {
       // If elevator exists, remove it from current position and push it to the end
-      console.log("Elevator already exists in recentlyViewed array");
-      console.log("Current recentlyViewed array:", UserModel.recentlyViewed);
+      console.log("Removing elevator at index: ", existingIndex, " with id: ", elevatorId);
       const existingEntry = UserModel.recentlyViewed.splice(existingIndex, 1)[0];
-      console.log("After removing existing entry:", UserModel.recentlyViewed);
+
       existingEntry.visitedAt = visitedAt;
       UserModel.recentlyViewed.push(existingEntry);
-      console.log("After pushing existing entry to the end:", UserModel.recentlyViewed);
     } else {
       // If elevator is not found, create a new entry
       UserModel.recentlyViewed.push({
@@ -117,6 +116,7 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     }
   
     await UserModel.save();
+    console.log("UserModel after saving: ", UserModel.recentlyViewed);
 
 
   res.json(elevator);

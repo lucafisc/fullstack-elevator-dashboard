@@ -1,11 +1,8 @@
 import axios from "axios";
 import { User } from "../db/user";
 import asyncHandler from "express-async-handler";
-import { response } from "express";
-const { expressjwt: jwt } = require("express-jwt");
-const jwksRsa = require("jwks-rsa");
+import { emitWarning } from "process";
 
-// Research if this is the best case to get user, or if i can decode the token and get the user from there
 export const getUserInfo = asyncHandler(async (req, res, next) => {
   const userId = req.auth.sub;
 
@@ -32,9 +29,26 @@ export const getUserInfo = asyncHandler(async (req, res, next) => {
         emailVerified: newUser.email_verified,
       },
     });
+    req.user = newUser;
   } else {
     req.user = user;
   }
+  next();
+});
 
+
+export const getTestUserInfo = asyncHandler(async (req, res, next) => {
+  req.auth = {
+    sub: process.env.TEST_USER_TOKEN,
+  }
+
+  // Check if user exists, if not create it
+  const user = await User.findOne({ "userInfo.auth0Id": req.auth.sub }) as typeof User;
+  if (!user) {
+    const error = new Error("Test user not found");
+    next(error);
+  } else {
+    req.user = user;
+  }
   next();
 });
