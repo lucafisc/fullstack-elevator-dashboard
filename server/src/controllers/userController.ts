@@ -10,7 +10,7 @@ export const getUserInfo = asyncHandler(async (req, res, next) => {
   const userId = req.auth.sub;
 
   // Check if user exists, if not create it
-  const user = await User.findOne({ "userInfo.auth0Id": userId });
+  const user = await User.findOne({ "userInfo.auth0Id": userId }) as typeof User;
   if (!user) {
     const accessToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(

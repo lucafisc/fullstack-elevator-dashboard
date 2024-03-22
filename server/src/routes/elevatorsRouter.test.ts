@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../index").default;
 const stateEnum = require("../db/elevator").stateEnum;
 
+
 describe("GET /elevators", () => {
   let response: any;
 
