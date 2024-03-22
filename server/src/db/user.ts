@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { Elevator } from "./elevator";
-import {RecentlyVisitedElevator} from "./recentlyViewed";
 
 const UserSchema = new mongoose.Schema({
   userInfo: {

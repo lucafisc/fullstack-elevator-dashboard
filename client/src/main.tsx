@@ -10,11 +10,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Auth0Provider
     domain="dev-a0oir8yzhmnp7jh3.us.auth0.com"
     clientId="nta4xjvoEqPLADRMPAODPjV3khN20F6C"
+    useRefreshTokens={true}
+    cacheLocation="localstorage"
     authorizationParams={{
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin,
+      audience: "this is a unique identifier",
+      scope: "openid profile email"
     }}
     >
-
     <App />
     </Auth0Provider>
   </React.StrictMode>,
