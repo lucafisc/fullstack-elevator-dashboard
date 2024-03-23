@@ -1,6 +1,8 @@
 import { GetTokenSilentlyOptions, User } from "@auth0/auth0-react";
-import SmallBtn from "./SmallBtn";
 import StateOverview from "./StateOverview";
+import { Route, Routes } from "react-router-dom";
+import StateList from "./StateList";
+import Header from "./Header";
 
 type Props = {
   user: User;
@@ -10,16 +12,12 @@ type Props = {
 
 export default function Dashboard({ user, logout, getToken }: Props) {
   return (
-    <>
-    <div className="flex justify-between items-center">
-      <h1 className="text-3xl">{`Welcome, `}
-      <span className="font-bold whitespace-nowrap">
-        {user.name}
-        </span> 
-        </h1>
-      <SmallBtn label={"Logout"} click={logout} />
+    <div className="pb-10 sm:p-8 p-4">
+      <Header username={user.name} logout={logout} />
+      <Routes>
+        <Route path="/" element={<StateOverview getToken={getToken} />} />
+        <Route path="/state/:state" element={<StateList />} />
+      </Routes>
     </div>
-    <StateOverview getToken={getToken}/>
-    </>
   );
 }

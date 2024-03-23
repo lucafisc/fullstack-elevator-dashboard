@@ -1,9 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
-import { Home } from "./components/Home";
+import { Home } from "./components/NoUserHome";
 
-// Find out if it is better to save the token in the local storage or in the state
 function App() {
   const {
     user,
@@ -15,33 +14,14 @@ function App() {
 
   return (
     <>
-      {isAuthenticated && user && <Dashboard user={user} logout={logout} getToken={getAccessTokenSilently}/>}
-      {!isAuthenticated && <Home login={loginWithRedirect} />}
-
-      {/* <button onClick={getTestElevators}>TEST</button>
-    <button onClick={getRecentlyVisitedElevators}>Get Recently Visited Elevators</button>
-    <button onClick={getElevatorById}>Get Elevator by id</button>
-    <button onClick={getElevatorsByState}>Get Elevators by state</button>
-    <button onClick={getElevators}>Get Elevators</button>
-    <button onClick={getElevatorsCountByState}>Get Elevators Count By State</button>
-      <button onClick={() => loginWithRedirect()}>Log In</button>
-      <button
-        onClick={() =>
-          logout({ logoutParams: { returnTo: window.location.origin } })
-        }
-      >
-        Log Out
-      </button>
       {isAuthenticated && user && (
-        <div>
-          <img src={user.picture} alt={user.name} />
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
-        </div>
+        <Dashboard
+          user={user}
+          logout={logout}
+          getToken={getAccessTokenSilently}
+        />
       )}
-     {elevators && (<div>
-        <h3>Elevator Count: {elevators.length}</h3>
-      </div>)} */}
+      {!isAuthenticated && <Home login={loginWithRedirect} />}
     </>
   );
 }
