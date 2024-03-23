@@ -238,8 +238,8 @@ GET http://localhost:3000/elevators/:id
                 "door_opened_count": 908,
                 "_id": "65fd6ecf03c5dde57a9f58c9"
             },
-			      // ...
-				    // Additional data objects
+			// ...
+			// Additional data objects
         ]
     }
 }
