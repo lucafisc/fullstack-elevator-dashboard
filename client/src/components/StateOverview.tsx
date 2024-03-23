@@ -30,12 +30,12 @@ export default function StateOverview({ getToken }: Props) {
   }, [getToken]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 my-4 w-full justify-between">
-      {elevatorStateCount !== null ? ( 
+    <div className="flex flex-col sm:flex-row gap-4 w-full justify-between">
+      {elevatorStateCount !== null ? (
         Object.entries(elevatorStateCount).map(([state, count]) => (
           <StateCard key={state} state={state} count={count} />
         ))
-              ) : (
+      ) : (
         <p>Loading...</p>
       )}
     </div>
