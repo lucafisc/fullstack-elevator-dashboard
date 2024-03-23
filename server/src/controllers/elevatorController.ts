@@ -13,7 +13,7 @@ const extractUserFromReq = (req: Request) => {
 const getUserElevators = async (req: Request) => {
   const user = extractUserFromReq(req);
   const userElevatorsIds = user.elevators;
-  const elevators = await Elevator.find({ _id: { $in: userElevatorsIds } });
+  const elevators = await Elevator.find({ _id: { $in: userElevatorsIds } }).select('-__v -chart');
   return elevators;
 };
 

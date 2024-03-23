@@ -20,9 +20,8 @@ const ElevatorSchema = new mongoose.Schema({
     reason: { type: String },
   },
   chart: { type: mongoose.Schema.Types.ObjectId, ref: Chart },
-});
-
-// export type of elevator, not interface
+}, 
+);
 
 export type ElevatorInterface = {
   specifications: {
