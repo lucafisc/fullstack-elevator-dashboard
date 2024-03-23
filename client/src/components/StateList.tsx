@@ -30,10 +30,9 @@ export default function StateList() {
 
   return (
     <>
-      <div className="pb-10">
         <Link to="/">← Back to Dashboard</Link>
-      </div>
 
+      <h1 className="py-5 text-xl">{`List of elevators with state ${state}`}</h1>
       <GridContainer>
         {elevators.map((elevator) => (
           <ElevatorCard key={elevator._id} elevator={elevator} />
