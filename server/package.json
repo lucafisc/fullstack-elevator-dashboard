@@ -10,7 +10,8 @@
     "devStart": "nodemon",
     "prepopulateDB": "npm run build",
     "populateDB": "node dataInit/populatedb.js",
-    "format": "prettier --write ./src/**/*.ts"
+    "format": "prettier --write ./src/**/*.ts",
+    "test": "rm -rf dist/*/*.test.js && npx jest"
   },
   "keywords": [],
   "author": "",
