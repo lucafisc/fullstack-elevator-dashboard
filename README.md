@@ -30,16 +30,15 @@ Before getting started, ensure you have the following prerequisites installed:
 
 ### Setting Up Environment
 
-1. **Navigate to Server Directory:**
-    
-    ```bash
-    cd server
-    ```
-    
+### **Navigate to Server Directory:**
+
+```bash
+cd server
+```
 
 ### Create .env File
 
-Create a new file named .env in the server directory and fill in the following values:
+Create a new file named `.env` in the server directory and fill in the following values:
 
 ```bash
 # Port number on which the server will run
@@ -72,8 +71,8 @@ npm install
 
 ### Accessing Endpoints
 
-- Authenticated Routes: The main route **/elevators** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
-- Test Route: Use the **/tes**t route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
+- Authenticated Routes: The main route **`/elevators`** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
+- Test Route: Use the **`/tes`**t route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
 
 ### Test Users for Protected Routes
 
@@ -83,3 +82,89 @@ npm install
 | mailto:elevate-industries@test.com | BlueStudio88 |
 
 For using these sample users in the frontend application, please refer to the [Frontend Section](notion://www.notion.so/42wolfsburgberlin/API-Documentation-74dfb3313cc741a9918871678b538a5b#frontend-section) for instructions on getting started.
+
+## Endpoints
+
+### Authentication
+
+Requests to the `/elevators` route must include a valid authentication token in the `Authorization` header. This token should be obtained by logging in as a registered user in the frontend dashboard.
+
+Example of including the authentication token in the request header:
+
+```tsx
+headers: {
+    Authorization: `Bearer ${token}`,
+},
+```
+
+Note that the `/test` route also provides access to the same endpoints without authentication.
+
+### Response Format:
+
+`JSON`
+
+## GET /elevators
+
+### Description:
+
+This endpoint retrieves an array of all elevators associated with the authenticated user.
+
+### HTTP Request:
+
+```
+GET http://localhost:3000/elevators
+```
+
+### Example Response (200 - OK):
+
+```tsx
+[
+    {
+        "specifications": {
+            "fabricationNumber": "FAB123",
+            "address": "Berlin, Germany",
+            "deviceIdentificationNumber": "DIN456",
+            "manufacturerName": "Otis",
+            "productionYear": 2010,
+            "elevatorType": "Passenger"
+        },
+        "operationalState": {
+            "floorNumber": 5,
+            "state": "operational"
+        },
+        "_id": "65fd6ecf03c5dde57a9f58d7"
+    },
+    {
+        "specifications": {
+            "fabricationNumber": "FAB124",
+            "address": "Munich, Germany",
+            "deviceIdentificationNumber": "DIN457",
+            "manufacturerName": "Schindler",
+            "productionYear": 2012,
+            "elevatorType": "Freight"
+        },
+        "operationalState": {
+            "floorNumber": 3,
+            "state": "warning",
+            "warningMessage": "Maintenance due soon"
+        },
+        "_id": "65fd6ecf03c5dde57a9f58d9"
+    },
+    {
+        "specifications": {
+            "fabricationNumber": "FAB125",
+            "address": "Hamburg, Germany",
+            "deviceIdentificationNumber": "DIN458",
+            "manufacturerName": "KONE",
+            "productionYear": 2015,
+            "elevatorType": "Passenger"
+        },
+        "operationalState": {
+            "floorNumber": 10,
+            "state": "out-of-order",
+            "reason": "Mechanical failure"
+        },
+        "_id": "65fd6ecf03c5dde57a9f58db"
+    },
+]
+```
