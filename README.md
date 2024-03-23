@@ -1,3 +1,5 @@
+# Untitled
+
 # API Documentation
 
 ## Introduction
@@ -437,12 +439,11 @@ The API is tested using Jest. Below are the test cases for each endpoint.
 
 # Database Documentation
 
-## Justification
+![Screenshot 2024-03-23 at 15.24.26.png](images/dbschemas.png)
 
-The database schema has been designed to efficiently manage user interactions, elevator specifications, and operational data within the application. The rationale behind the schema design includes:
+The database schema has been designed to efficiently manage user interactions, elevator specifications, and operational data within the application. Users can have access to multiple elevators, as reflected in the schema where the elevators field within the User schema establishes a one-to-many relationship with the Elevator model. Additionally, the recentlyViewed field within the User schema further extends this relationship, allowing users to have multiple elevators in their recently viewed list. Both of these relationships are established using references to the Elevator model.
 
-1. **One-to-Many Relationship**: Users can have access to multiple elevators, facilitating efficient querying and management of elevator permissions. Similarly, elevators can have multiple charts, allowing for the storage of historical operational data over time.
-2. **Historical Data Tracking**: Establishing one-to-many relationships between elevators and charts enables efficient storage and retrieval of historical data for each elevator. This structure supports data analysis, monitoring, and performance tracking over time.
+On the other hand, each elevator is associated with only one chart, representing historical operational data. This one-to-one relationship is established through a reference to the Chart model within the Elevator schema. By linking elevators to charts in this manner, the database schema efficiently manages the storage and retrieval of operational data for each elevator over time.
 
 ## User Schema
 
