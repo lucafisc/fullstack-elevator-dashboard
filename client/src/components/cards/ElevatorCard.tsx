@@ -10,6 +10,7 @@ type Props = {
 export default function ElevatorCard({ elevator }: Props) {
   return (
     <Link
+      data-testid="elevator-card"
       to={`/elevator/${elevator._id}`}
       className="bg-primary border border-outline rounded-3xl sm:h-40 flex items-center justify-start p-6 cursor-pointer hover:brightness-125 transition-all active:scale-95"
     >
