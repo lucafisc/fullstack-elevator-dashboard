@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import calculateBackgroundColor from "../functions/calculateBackgroundColor";
+import calculateColor from "../functions/calculateColor";
 import { Elevator } from "../types/ElevatorType";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 
 export default function ElevatorCard({ elevator }: Props) {
   const { specifications, operationalState } = elevator;
-  const bgColor = calculateBackgroundColor(operationalState.state);
+  const borderColor = calculateColor(operationalState.state);
   let stateDiv = null;
 
   switch (operationalState.state) {
@@ -31,9 +31,9 @@ export default function ElevatorCard({ elevator }: Props) {
   return (
     <Link
       to={`/elevator/${elevator._id}`}
-      className="bg-black rounded-3xl h-40 flex items-center justify-start p-6 cursor-pointer hover:bg-gray-900 transition-all active:scale-95"
+      className="bg-primary border border-outline rounded-3xl h-40 flex items-center justify-start p-6 cursor-pointer hover:brightness-125 transition-all active:scale-95"
     >
-      <div className={`h-8 aspect-square rounded-full ${bgColor} mr-6`}></div>
+      <div className={`h-8 aspect-square rounded-full bg-outline border-2 ${borderColor} mr-6`}></div>
       <div>
         <h2 className="font-bold text-xl">
           {specifications.deviceIdentificationNumber}

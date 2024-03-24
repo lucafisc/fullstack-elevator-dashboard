@@ -5,6 +5,9 @@ export default {
     extend: {
       colors: {
         accent: "#E0491F",
+        primary: "#13191d",
+        outline: "#1b232a",
+        primaryHover: "#2A2F33"
       },
     },
   },

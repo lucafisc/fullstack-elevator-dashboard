@@ -26,7 +26,7 @@ export default function StateList() {
       }
     };
     fetchData();
-  }, [state]);
+  }, [state, getAccessTokenSilently]);
 
   return (
     <>
