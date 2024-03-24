@@ -14,10 +14,8 @@ export default function StateCard({ state, count }: Props) {
       to={`/state/${state}`}
       className={`rounded-lg bg-primary border p-4 w-full sm:max-w-sm cursor-pointer shadow-md ${bgColor} hover:brightness-125 active:scale-95 transition-all`}
     >
-      <div>
         <p>Total {state}</p>
         <p className="text-3xl font-bold">{count}</p>
-      </div>
     </Link>
   );
 }

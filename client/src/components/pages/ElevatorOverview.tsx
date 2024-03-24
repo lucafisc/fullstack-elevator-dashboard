@@ -1,4 +1,4 @@
-import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import { getFromAPI } from "../../utils/getFromAPI";
 import type { ElevatorStateCount } from "../../types/StateTypes";
@@ -7,23 +7,19 @@ import StateCard from "../cards/StateCard";
 import GridContainer from "../ui/GridContainer";
 import { RecentlyVisited, recentlyVisitedSchema } from "../../types/ElevatorType";
 import ElevatorCard from "../cards/ElevatorCard";
-type Props = {
-  getToken: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
-};
 
-
-export default function ElevatorOverview({ getToken }: Props) {
+export default function ElevatorOverview() {
   const [elevatorStateCount, setElevatorStateCount] =
     useState<ElevatorStateCount | null>(null);
     const [elevators, setElevators] = useState<RecentlyVisited[]>([]);
-
+    const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchStateData = async () => {
       try {
         const response = (await getFromAPI({
           endpoint: "/elevators/state/count",
-          getToken,
+          getToken: getAccessTokenSilently,
         })) as ElevatorStateCount;
         const data = elevatorStateCountSchema.parse(response);
         setElevatorStateCount(data);
@@ -36,7 +32,7 @@ export default function ElevatorOverview({ getToken }: Props) {
       try {
         const response = (await getFromAPI({
           endpoint: '/elevators/recentlyVisited',
-          getToken: getToken,
+          getToken: getAccessTokenSilently,
         })) as RecentlyVisited[];
         const data = response.map((elevator) => recentlyVisitedSchema.parse(elevator));
         data.reverse();
@@ -47,7 +43,7 @@ export default function ElevatorOverview({ getToken }: Props) {
     };
     fetchRecentData();
     fetchStateData();
-  }, [getToken]);
+  }, [getAccessTokenSilently]);
 
   return (
     <>
