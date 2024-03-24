@@ -1,5 +1,6 @@
 import z from "zod";
 import { OperationalState, OutOfOrderState, WarningState } from "./StateTypes";
+import { chartSchema } from "./ChartType";
 
 const ElevatorType = z.enum(["Passenger", "Freight"]);
 
@@ -36,6 +37,13 @@ export const elevatorSchema = z.object({
         path: ["operationalState"],
       },
     ),
+    chart: chartSchema.optional(),
 });
 
+export const recentlyVisitedSchema = z.object({
+ elevator: elevatorSchema,
+  visitedAt: z.string(),
+});
+
+export type RecentlyVisited = z.infer<typeof recentlyVisitedSchema>;
 export type Elevator = z.infer<typeof elevatorSchema>;

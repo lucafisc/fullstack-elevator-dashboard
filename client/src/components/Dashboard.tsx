@@ -1,8 +1,9 @@
 import { GetTokenSilentlyOptions, User } from "@auth0/auth0-react";
-import StateOverview from "./StateOverview";
+import StateOverview from "./Overview";
 import { Route, Routes } from "react-router-dom";
 import StateList from "./StateList";
 import Header from "./Header";
+import ElevatorDetail from "./ElevatorDetail";
 
 type Props = {
   user: User;
@@ -17,6 +18,7 @@ export default function Dashboard({ user, logout, getToken }: Props) {
       <Routes>
         <Route path="/" element={<StateOverview getToken={getToken} />} />
         <Route path="/state/:state" element={<StateList />} />
+        <Route path="/elevator/:id" element={<ElevatorDetail />} />
       </Routes>
     </div>
   );

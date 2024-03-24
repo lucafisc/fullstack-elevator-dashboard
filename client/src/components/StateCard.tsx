@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import calculateBackgroundColor from "../functions/calculateBackgroundColor";
+import calculateBackgroundColor from "../functions/calculateColor";
 
 type Props = {
   state: string;
@@ -12,7 +12,7 @@ export default function StateCard({ state, count }: Props) {
   return (
     <Link
       to={`/state/${state}`}
-      className={`rounded-lg p-4 w-full sm:max-w-sm cursor-pointer shadow-md ${bgColor} hover:brightness-125 active:scale-95 transition-all`}
+      className={`rounded-lg bg-primary border p-4 w-full sm:max-w-sm cursor-pointer shadow-md ${bgColor} hover:brightness-125 active:scale-95 transition-all`}
     >
       <div>
         <p>Total {state}</p>

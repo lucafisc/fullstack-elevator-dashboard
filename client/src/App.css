@@ -3,3 +3,17 @@
   margin: 0 auto;
   height: 100vh;
 }
+
+#root .MuiChartsAxis-line,
+#root .MuiChartsAxis-tick
+{
+  stroke: white;
+}
+#root .MuiChartsGrid-line {
+  stroke: rgba(255, 255, 255, 0.249)
+}
+
+#root .MuiChartsAxis-tickLabel,
+#root .MuiChartsLegend-series > text > tspan {
+fill: white;
+}
