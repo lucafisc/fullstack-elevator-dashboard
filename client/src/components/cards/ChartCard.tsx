@@ -1,7 +1,7 @@
-import { LineChart } from "@mui/x-charts/LineChart";
 import { Elevator } from "../../types/ElevatorType";
 import { formatChartName } from "../../utils/formatChartName";
 import { useParentDimensions } from "../../hooks/useParentDimensions";
+import { LineChart } from "@mui/x-charts/LineChart";
 type Props = {
   elevator: Elevator;
 };
@@ -12,7 +12,9 @@ export default function ChartCard({ elevator }: Props) {
   return (
     <>
       {elevator.chart && elevator.chart.data.length > 0 ? (
-        <div className="w-full bg-primary border border-outline rounded-3xl mt-6 h-[500px] flex flex-col items-center justify-center sm:p-12 p-2">
+        <div
+         data-testid="chart-card"
+         className="w-full bg-primary border border-outline rounded-3xl mt-6 h-[500px] flex flex-col items-center justify-center sm:p-12 p-2">
           <h1 className="pt-8">{formatChartName(elevator.chart.name)}</h1>
           <div id="parent-container" className="w-full">
             <LineChart
@@ -62,7 +64,7 @@ export default function ChartCard({ elevator }: Props) {
           </div>
         </div>
       ) : (
-        <div className="w-full bg-primary border border-outline rounded-3xl mt-6  flex flex-col items-center justify-center p-12">
+        <div data-testid="chart-card" className="w-full bg-primary border border-outline rounded-3xl mt-6  flex flex-col items-center justify-center p-12">
           <h1>No charts available for this elevator</h1>
         </div>
       )}
