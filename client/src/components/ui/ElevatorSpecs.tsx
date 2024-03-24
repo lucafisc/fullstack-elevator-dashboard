@@ -25,7 +25,9 @@ export default function ElevatorSpecs({ elevator }: Props) {
       stateDiv = <br />;
   }
   return (
-    <div className="flex flex-col sm:flex-row justify-between w-full">
+    <div
+      data-testid="elevator-specs"
+     className="flex flex-col sm:flex-row justify-between w-full">
       <div>
         <h2 className="font-bold text-xl">
           {specifications.deviceIdentificationNumber}
