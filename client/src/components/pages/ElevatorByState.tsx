@@ -30,8 +30,7 @@ export default function ElevatorByState() {
 
   return (
     <>
-        <Link to="/">← Back to Dashboard</Link>
-
+      <Link to="/">← Back to Dashboard</Link>
       <h1 className="py-5 text-xl">{`List of elevators with state ${state}`}</h1>
       <GridContainer>
         {elevators.map((elevator) => (

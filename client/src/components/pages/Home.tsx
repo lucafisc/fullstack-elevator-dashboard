@@ -15,7 +15,7 @@ export default function Home({ user, logout }: Props) {
     <div className="pb-10 sm:p-8 p-4">
       <Header username={user.name} logout={logout} />
       <Routes>
-        <Route path="/" element={<ElevatorOverview/>} />
+        <Route path="/" element={<ElevatorOverview />} />
         <Route path="/state/:state" element={<ElevatorByState />} />
         <Route path="/elevator/:id" element={<ElevatorById />} />
       </Routes>
