@@ -37,11 +37,11 @@ export const elevatorSchema = z.object({
         path: ["operationalState"],
       },
     ),
-    chart: chartSchema.optional(),
+  chart: chartSchema.optional(),
 });
 
 export const recentlyVisitedSchema = z.object({
- elevator: elevatorSchema,
+  elevator: elevatorSchema,
   visitedAt: z.string(),
 });
 

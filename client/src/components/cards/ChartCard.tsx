@@ -25,31 +25,31 @@ export default function ChartCard({ elevator }: Props) {
               series={[
                 {
                   data: elevator.chart.data.map(
-                    (data) => data.door_closed_count
+                    (data) => data.door_closed_count,
                   ),
                   label: "Door Closed Count",
                 },
                 {
                   data: elevator.chart.data.map(
-                    (data) => data.door_closings_count
+                    (data) => data.door_closings_count,
                   ),
                   label: "Door Closings Count",
                 },
                 {
                   data: elevator.chart.data.map(
-                    (data) => data.door_cycles_count
+                    (data) => data.door_cycles_count,
                   ),
                   label: "Door Cycles Count",
                 },
                 {
                   data: elevator.chart.data.map(
-                    (data) => data.door_opened_count
+                    (data) => data.door_opened_count,
                   ),
                   label: "Door Opened Count",
                 },
                 {
                   data: elevator.chart.data.map(
-                    (data) => data.door_openings_count
+                    (data) => data.door_openings_count,
                   ),
                   label: "Door Openings Count",
                 },
