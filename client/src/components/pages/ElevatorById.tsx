@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Elevator, elevatorSchema } from "../types/ElevatorType";
+import { Elevator, elevatorSchema } from "../../types/ElevatorType";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getFromAPI } from "../functions/getFromAPI";
-import ElevatorCard from "./ElevatorCard";
+import { getFromAPI } from "../../utils/getFromAPI";
+import ElevatorCard from "../cards/ElevatorCard";
 import { LineChart } from "@mui/x-charts/LineChart";
-import { useParentDimensions } from "../hooks/useParentDimensions";
+import { useParentDimensions } from "../../hooks/useParentDimensions";
 
-export default function ElevatorDetail() {
+export default function ElevatorById() {
   const [elevator, setElevator] = useState<Elevator | null>(null);
   const { id } = useParams();
   const { getAccessTokenSilently } = useAuth0();

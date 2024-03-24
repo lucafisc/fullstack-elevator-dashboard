@@ -3,7 +3,7 @@ type Props = {
   click: () => Promise<void>;
 };
 
-export default function SmallBtn({ label, click }: Props) {
+export default function Button({ label, click }: Props) {
   return (
     <div>
       <button

@@ -1,18 +1,18 @@
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
-import { getFromAPI } from "../functions/getFromAPI";
-import type { ElevatorStateCount } from "../types/StateTypes";
-import { elevatorStateCountSchema } from "../types/StateTypes";
-import StateCard from "./StateCard";
-import GridContainer from "./GridContainer";
-import { RecentlyVisited, recentlyVisitedSchema } from "../types/ElevatorType";
-import ElevatorCard from "./ElevatorCard";
+import { getFromAPI } from "../../utils/getFromAPI";
+import type { ElevatorStateCount } from "../../types/StateTypes";
+import { elevatorStateCountSchema } from "../../types/StateTypes";
+import StateCard from "../cards/StateCard";
+import GridContainer from "../ui/GridContainer";
+import { RecentlyVisited, recentlyVisitedSchema } from "../../types/ElevatorType";
+import ElevatorCard from "../cards/ElevatorCard";
 type Props = {
   getToken: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
 };
 
 
-export default function Overview({ getToken }: Props) {
+export default function ElevatorOverview({ getToken }: Props) {
   const [elevatorStateCount, setElevatorStateCount] =
     useState<ElevatorStateCount | null>(null);
     const [elevators, setElevators] = useState<RecentlyVisited[]>([]);

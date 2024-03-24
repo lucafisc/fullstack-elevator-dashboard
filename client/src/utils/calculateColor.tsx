@@ -12,7 +12,7 @@ export default function calculateColor(state: string) {
       bgColor = "border-yellow-900";
       break;
     default:
-      bgColor = "border-gray-950";
+      bgColor = "border-outline";
   }
 
   return bgColor;
