@@ -9,7 +9,6 @@ function App() {
     isAuthenticated,
     loginWithRedirect,
     logout,
-    getAccessTokenSilently,
   } = useAuth0();
 
   return (
@@ -18,7 +17,6 @@ function App() {
         <Home
           user={user}
           logout={logout}
-          getToken={getAccessTokenSilently}
         />
       ) : (
         <Welcome login={loginWithRedirect} />
