@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getFromAPI } from "../functions/getFromAPI";
+import { getFromAPI } from "../../utils/getFromAPI";
 import { useAuth0 } from "@auth0/auth0-react";
-import type { Elevator } from "../types/ElevatorType";
-import { elevatorSchema } from "../types/ElevatorType";
-import ElevatorCard from "./ElevatorCard";
-import GridContainer from "./GridContainer";
+import type { Elevator } from "../../types/ElevatorType";
+import { elevatorSchema } from "../../types/ElevatorType";
+import ElevatorCard from "../cards/ElevatorCard";
+import GridContainer from "../ui/GridContainer";
 
-export default function StateList() {
+export default function ElevatorByState() {
   const [elevators, setElevators] = useState<Elevator[]>([]);
   const { state } = useParams();
   const { getAccessTokenSilently } = useAuth0();

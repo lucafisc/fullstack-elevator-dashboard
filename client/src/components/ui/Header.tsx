@@ -1,4 +1,4 @@
-import SmallBtn from "./SmallBtn";
+import Button from "./Button";
 
 type Props = {
   username: string | undefined;
@@ -12,7 +12,7 @@ export default function Header({ username, logout }: Props) {
         {`Welcome, `}
         <span className="font-bold whitespace-nowrap">{username}</span>
       </h1>
-      <SmallBtn label={"Logout"} click={logout} />
+      <Button label={"Logout"} click={logout} />
     </header>
   );
 }

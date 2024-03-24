@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import calculateColor from "../functions/calculateColor";
-import { Elevator } from "../types/ElevatorType";
+import calculateColor from "../../utils/calculateColor";
+import { Elevator } from "../../types/ElevatorType";
 
 type Props = {
   elevator: Elevator;

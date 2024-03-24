@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import "./App.css";
-import Dashboard from "./components/Dashboard";
-import { Home } from "./components/NoUserHome";
+import "./assets/App.css";
+import Home from "./components/pages/Home";
+import { Welcome } from "./components/pages/Welcome";
 
 function App() {
   const {
@@ -14,14 +14,15 @@ function App() {
 
   return (
     <>
-      {isAuthenticated && user && (
-        <Dashboard
+      {isAuthenticated && user ? (
+        <Home
           user={user}
           logout={logout}
           getToken={getAccessTokenSilently}
         />
+      ) : (
+        <Welcome login={loginWithRedirect} />
       )}
-      {!isAuthenticated && <Home login={loginWithRedirect} />}
     </>
   );
 }

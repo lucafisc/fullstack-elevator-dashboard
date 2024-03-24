@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import calculateBackgroundColor from "../functions/calculateColor";
+import calculateBackgroundColor from "../../utils/calculateColor";
 
 type Props = {
   state: string;
