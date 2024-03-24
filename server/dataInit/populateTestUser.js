@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 require('dotenv').config()
 const mongoose = require("mongoose");
-const User = require("../dist/db/user.js").User; // Import the User model
+const User = require("../dist/db/user.js").User;
 const Elevator = require("../dist/db/elevator.js").Elevator;
 
 const mongoDB = process.env.DB_URL;
