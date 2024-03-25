@@ -2,11 +2,11 @@
 
 ![screenshot.png](./images/screenshot.png)
 
-> A full-stack web app implemented using React with TypeScript for the frontend, with user authentication using Auth0. Tested with Jest and React testing library.
-> 
 
-> On the backend, Express.js serves as the API framework, using Auth0 for safeguarding protected routes. MongoDB handles database storage. API endpoints tested with Jest.
-> 
+> A full-stack web app implemented using Express with TypeScript for the backend, using Auth0 for safeguarding protected routes. MongoDB handles database storage. API endpoints tested with Jest.
+
+> React with TypeScript are used for the frontend, with user authentication using Auth0 and mobile-first design. Tested with Jest and React testing library.
+
 
 ## Index
 
