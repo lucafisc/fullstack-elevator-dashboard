@@ -15,46 +15,46 @@ export default function ElevatorOverview() {
   const [elevatorStateCount, setElevatorStateCount] =
     useState<ElevatorStateCount | null>(null);
   const [elevators, setElevators] = useState<RecentlyVisited[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    const fetchStateData = async () => {
+    const fetchData = async () => {
       try {
-        const response = (await getFromAPI({
+        // Fetch state count data
+        const stateResponse = (await getFromAPI({
           endpoint: "/elevators/state/count",
           getToken: getAccessTokenSilently,
         })) as ElevatorStateCount;
-        const data = elevatorStateCountSchema.parse(response);
-        setElevatorStateCount(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setElevatorStateCount(null);
-      }
-    };
-    const fetchRecentData = async () => {
-      try {
-        const response = (await getFromAPI({
+        const stateData = elevatorStateCountSchema.parse(stateResponse);
+        setElevatorStateCount(stateData);
+
+        // Fetch recently visited elevators data
+        const recentResponse = (await getFromAPI({
           endpoint: "/elevators/recentlyVisited",
           getToken: getAccessTokenSilently,
         })) as RecentlyVisited[];
-        const data = response.map((elevator) =>
+        const recentData = recentResponse.map((elevator) =>
           recentlyVisitedSchema.parse(elevator),
         );
-        data.reverse();
-        setElevators(data);
+        recentData.reverse();
+        setElevators(recentData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError("Error fetching elevator data");
       }
     };
-    fetchRecentData();
-    fetchStateData();
+
+    fetchData();
   }, [getAccessTokenSilently]);
 
-  return (
+  return error ? (
+    <h1 className="py-5 text-xl">{error}</h1>
+  ) : (
     <>
-    {/* State Overview */}
+      {/* State Overview */}
       <h1 className="py-5 text-xl">State Overview</h1>
-      <div className="flex flex-col sm:flex-row gap-4 w-full justify-between">
+      <div className="flex flex-col justify-between w-full gap-4 sm:flex-row">
         {elevatorStateCount &&
           Object.entries(elevatorStateCount).map(([state, count]) => (
             <StateCard key={state} state={state} count={count} />
