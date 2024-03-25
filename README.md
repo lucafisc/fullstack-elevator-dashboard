@@ -1,27 +1,51 @@
-# Untitled
+# Welcome to the Elevator Dashboard 👋 🛗
 
-# API Documentation
+---
 
-## Introduction
+![screenshot.png](./images/screenshot.png)
 
-> Version 1
+> A full-stack web app implemented using React with TypeScript for the frontend, with user authentication using Auth0. Tested with Jest and React testing library.
 > 
 
-Welcome to the Elevator Data API! This API provides comprehensive access to data about elevators for a specific user. Elevators are characterized by their specifications, which remain constant, and their operational state, which may change over time.
+> On the backend, Express.js serves as the API framework, using Auth0 for safeguarding protected routes. MongoDB handles database storage. API endpoints tested with Jest.
+> 
 
-### Purpose and Scope
+## Index
 
-The Elevator Data API serves as a vital tool for managing and monitoring elevators associated with your account. It allows you to retrieve detailed information about each elevator's specifications, such as fabrication number, manufacturer, production year, and type. Additionally, you can track the real-time operational state of each elevator, including its current floor number, operational status, warning messages, and reasons for any deviations from normal operation.
+- [Getting Started](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#getting-started)
+    - [Prerequisites](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#prerequisites)
+    - [Clone this repository](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#clone-this-repository)
+    - [Setting up the Server](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#setting-up-the-server)
+    - [Setting up the Dashboard](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#setting-up-the-dashboard)
+    - [Running tests](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#running-tests)
+- [API](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#api)
+    - [Introduction](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#introduction)
+    - [Authentication](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#authentication)
+    - [GET /elevators](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#get-elevators)
+    - [GET /elevators/:id](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#get-elevatorsid)
+    - [GET /elevators/state/:state](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#get-elevatorsstatestate)
+    - [GET /elevators/state/count](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#get-elevatorsstatecount)
+    - [GET /elevators/recentlyVisited](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#get-elevatorsrecentlyvisited)
+    - [Testing](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#testing)
+- [Database](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#database)
+    - [User Schema](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#user-schema)
+    - [Elevator Schema](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#elevator-schema)
+    - [Chart Schema](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#chart-schema)
+- [Frontend](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#frontend)
+    - [App](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#app)
+    - [Home](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#home)
+    - [Welcome](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#welcome)
+    - [Components categories](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#components-categories)
+    - [Card Components](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#card-components)
+        - [StateCard](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#statecard)
+        - [ElevatorCard](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#elevatorcard)
+        - [ChartCard](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#chartcard)
+    - [Page Components](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#page-components)
+        - [ElevatorByState](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#elevatorbystate)
+        - [ElevatorById](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#elevatorbyid)
+        - [ElevatorOverview](notion://www.notion.so/42wolfsburgberlin/Welcome-to-the-Elevator-Dashboard-74dfb3313cc741a9918871678b538a5b#elevatoroverview)
 
-### Key Features
-
-- **Get All User's Elevators:** Retrieve a list of all elevators associated with the user's account.
-- **Overview of Elevator States:** Obtain an overview of how many elevators are in each operational state, such as "operational," "under maintenance," or "out of service."
-- **Filter Elevators by State:** Filter elevators based on their operational state, allowing you to focus on specific subsets of elevators.
-- **Detailed Elevator Information:** Access detailed information about a specific elevator, including both its specifications and current operational state. If available, additional data stored in the chart will be populated here, providing a comprehensive view of the elevator's history and performance.
-- **Recent Activity:** Retrieve a list of the ten latest viewed elevators, enabling you to track recent user activity and prioritize attention to specific elevators.
-
-## Getting Started
+# Getting Started
 
 ### Prerequisites
 
@@ -29,25 +53,37 @@ Before getting started, ensure you have the following prerequisites installed:
 
 - Node.js and npm (Node Package Manager)
 - MongoDB
+- Git
 
-### Setting Up Environment
+### Clone this repository
+
+```
+git clone https://github.com/lucafisc/fullstack-elevator-dashboard
+```
+
+## Setting up the Server
 
 ### **Navigate to Server Directory:**
 
 ```bash
 cd server
+
 ```
 
 ### Create .env File
 
 Create a new file named `.env` in the server directory and fill in the following values:
 
+```
+touch .env
+```
+
 ```bash
 # Port number on which the server will run
 PORT=3000
 
 # Base URL of the server
-BASE_URL="http://localhost"
+BASE_URL="<http://localhost>"
 
 # MongoDB connection URL including credentials and database name
 DB_URL="mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0"
@@ -59,10 +95,11 @@ SECRET="a95f6d06ce7cb693c9c4cc18a7dd412e08ef1b94edbe8b8c6de85dfb68778fa4"
 CLIENT_ID="BO0YUnm0ZPx1t08sJaqtjBWCGQq6YD1J"
 
 # Auth0 issuer base URL for authentication
-ISSUER_BASE_URL="https://dev-a0oir8yzhmnp7jh3.us.auth0.com"
+ISSUER_BASE_URL="<https://dev-a0oir8yzhmnp7jh3.us.auth0.com>"
 
 # Test user token used for accessing endpoints without authentication
 TEST_USER_TOKEN="auth0|65fd62f37e87f7a8c0a5454f"
+
 ```
 
 ### Install Dependencies
@@ -80,20 +117,73 @@ npm start
 ### Accessing Endpoints
 
 - Authenticated Routes: The main route **`/elevators`** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
-- Test Route: Use the **`/tes`**t route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
+- Test Route: Use the **`/test`** route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
 
 ### Test Users for Protected Routes
 
 | Email | Password |
 | --- | --- |
-| mailto:skyward-peaks@test.com | ElapseJam88 |
-| mailto:elevate-industries@test.com | BlueStudio88 |
+| skyward-peaks@test.com | ElapseJam88 |
+| elevate-industries@test.com | BlueStudio88 |
 
-For using these sample users in the frontend application, please refer to the [Frontend Section](notion://www.notion.so/42wolfsburgberlin/API-Documentation-74dfb3313cc741a9918871678b538a5b#frontend-section) for instructions on getting started.
+## Setting up the Dashboard
 
-## Endpoints
+If you are still located in `/server` navigate back one directory with `cd ..` and enter the client directory:
 
-### Authentication
+```
+cd client
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Start the dashboard
+
+```
+npm run start
+```
+
+You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided above to login.
+
+## Running tests
+
+Tests can be run on the server directory using:
+
+```
+npm run test
+```
+
+And in the client directory using the same command:
+
+```
+npm run test
+```
+
+# API
+
+## Introduction
+
+> Version 1
+> 
+
+This API provides comprehensive access to data about elevators for a specific user. 
+
+### Purpose and Scope
+
+The Elevator Data API serves as a vital tool for managing and monitoring elevators associated with your account. It allows you to retrieve detailed information about each elevator's specifications, such as fabrication number, manufacturer, production year, and type. Additionally, you can track the real-time operational state of each elevator, including its current floor number, operational status, warning messages, and reasons for any deviations from normal operation.
+
+### Key Features
+
+- **Get All User's Elevators:** Retrieve a list of all elevators associated with the user's account.
+- **Overview of Elevator States:** Obtain an overview of how many elevators are in each operational state, such as "operational," "under maintenance," or "out of order."
+- **Filter Elevators by State:** Filter elevators based on their operational state, allowing you to focus on specific subsets of elevators.
+- **Detailed Elevator Information:** Access detailed information about a specific elevator, including both its specifications and current operational state. If available, additional data stored in the chart will be populated here, providing a comprehensive view of the elevator's history and performance.
+- **Recent Activity:** Retrieve a list of the ten latest viewed elevators, enabling you to track recent user activity and prioritize attention to specific elevators.
+
+## Authentication
 
 Requests to the `/elevators` route must include a valid authentication token in the `Authorization` header. This token should be obtained by logging in as a registered user in the frontend dashboard.
 
@@ -243,6 +333,7 @@ GET http://localhost:3000/elevators/:id
         ]
     }
 }
+
 ```
 
 ## GET /elevators/state/:state
@@ -306,7 +397,7 @@ GET http://localhost:3000/elevators/state/:state
 
 | State | Property Name | Description |
 | --- | --- | --- |
-| operational | None | No additional properties. |
+| operational | — | No additional properties. |
 | out-of-order | reason | Description of the cause of the malfunction. |
 | warning | warningMessage | Message indicating the reason for the warning. |
 
@@ -407,10 +498,6 @@ To run the tests, execute the following command in the terminal:
 npm run test
 ```
 
-## Testing
-
-The API is tested using Jest. Below are the test cases for each endpoint.
-
 ### GET /test
 
 - Returns an array of elevators.
@@ -437,9 +524,9 @@ The API is tested using Jest. Below are the test cases for each endpoint.
 
 - Returns 10 most recently visited elevators.
 
-# Database Documentation
+# Database
 
-![Screenshot 2024-03-23 at 15.24.26.png](images/dbschemas.png)
+![dbschemas.png](./images/dbschemas.png)
 
 The database schema has been designed to efficiently manage user interactions, elevator specifications, and operational data within the application. Users can have access to multiple elevators, as reflected in the schema where the elevators field within the User schema establishes a one-to-many relationship with the Elevator model. Additionally, the recentlyViewed field within the User schema further extends this relationship, allowing users to have multiple elevators in their recently viewed list. Both of these relationships are established using references to the Elevator model.
 
@@ -465,7 +552,7 @@ The User schema captures user-related information and their interactions within 
 
 ## Elevator Schema
 
-The Elevator schema encapsulates details about each elevator.
+The Elevator schema encapsulates details about each elevator. Elevators are characterized by their specifications, which are mostly constant values, and their operational state, which may change more often over time.
 
 | Property | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -493,3 +580,280 @@ The Chart schema stores historical data related to elevator operation.
 | data | Array of Objects | ✔️ | Contains time-series data related to elevator operation |
 
 The chosen database schema provides a foundation for managing user interactions, elevator specifications, and operational data within the application, enabling effective data organization and analysis.
+
+NOTE: Original Chart Data attributes were randomized to test Chart component.
+
+# Frontend
+
+This documentation provides detailed information about each React component, including their purpose, usage, props, external dependencies, styling, interaction, and associated tests.
+
+The frontend architecture is structured as follows:
+
+```
+└── App
+    ├── Home
+    │   ├── Header
+    │   └── Footer
+    │   └── Routes
+    │       ├── ElevatorOverview
+    │       │   ├── StateCard
+    │       │   └── ElevatorCard
+    │       ├── ElevatorByState
+    │       │   └── ElevatorCard
+    │       └── ElevatorById
+    │           ├── ElevatorCard
+    │           └── ChartCard
+    └── Welcome
+```
+
+## App
+
+The `App` component is the entry point of the application. It manages the authentication state using Auth0's `useAuth0` hook. Based on the authentication status, it either renders the `Home` component if the user is authenticated or the `Welcome` component if the user is not authenticated.
+
+### External Dependencies
+
+- `useAuth0` from `@auth0/auth0-react`: Used for authentication state management.
+- `Home` from `./components/pages/Home`: Renders the main page of the application for authenticated users.
+- `Welcome` from `./components/pages/Welcome`: Renders the welcome page for unauthenticated users.
+
+## Home
+
+The `Home` component serves as the main page of the application. It displays a header containing the user's username and logout button. Additionally, it utilizes React Router's `Routes` and `Route` components to render different views based on the URL path.
+
+### Props
+
+| Name | Type | Description |
+| --- | --- | --- |
+| user | User | The authenticated user object containing user information. |
+| logout | () => Promise<void> | A function to logout the user. |
+
+### Child Components
+
+- `Header`: Displays the user's username and logout button.
+- `ElevatorOverview`: Renders an overview of elevator data.
+
+### Child Components
+
+- `Header`: Displays the user's username and logout button.
+- Route Structure
+    - `/` Renders the `ElevatorOverview` component.
+    - `/state/:state` Renders the `ElevatorByState` component with the specified state parameter.
+    - `/elevator/:id` Renders the `ElevatorById` component with the specified elevator ID parameter.
+
+### External Dependencies
+
+- `Routes` and `Route` from `react-router-dom`: Used for routing between different views.
+
+## Welcome
+
+The `Welcome` component is displayed when the user is not authenticated. It prompts the user to log in and provides a button to initiate the login process.
+
+### Props
+
+| Name | Type | Description |
+| --- | --- | --- |
+| login | () => Promise<void> | A function to initiate the login process. |
+
+### Interaction
+
+- Clicking the "Login" button initiates the login process.
+
+### External Dependencies
+
+- `Button` from `../ui/Button`: Used to render the login button.
+
+## Components categories
+
+| Category | Description | Has State | Fetches Data | React Router |
+| --- | --- | --- | --- | --- |
+| UI Components | Small components that make up smaller UI elements | ❌ | ❌ | ❌ |
+| Card Components | Components that display information about an object | ❌ (Note: Except for ChartCard component) | ❌ | ❌ |
+| Pages | Components that take over the entire page and often fetch data from APIs or perform authentication-related tasks. Typically routed by React Router or displayed using conditional logic.
+ | ✔️ | ✔️ | ✔️  |
+
+## Card Components
+
+### StateCard
+
+The `StateCard` component displays information about the total count of elevators in a specific state. It provides a clickable link to navigate to a page displaying more detailed information about elevators in that state.
+
+### Props
+
+| Name | Type | Description |
+| --- | --- | --- |
+| state | string | The state of the elevators (e.g., "operational", "warning", "out-of-order"). |
+| count | number | The total count of elevators in the specified state. |
+
+### External Dependencies
+
+- `Link` from `react-router-dom`: Used for navigation to the detailed state page.
+- `calculateBackgroundColor`: Used to calculate the border color based on the elevator state.
+
+### Interaction
+
+- Clicking on the `StateCard` navigates to a detailed page displaying information about elevators in that state.
+
+### Test Cases
+
+- Renders with correct state and count.
+- Renders with correct background color based on state.
+
+### ElevatorCard
+
+The `ElevatorCard` component displays information about a specific elevator. It provides a clickable link to navigate to a page displaying more detailed information about that elevator.
+
+### Props
+
+| Name | Type | Description |
+| --- | --- | --- |
+| elevator | Elevator | An object containing details about the elevator instance. |
+
+### External Dependencies
+
+- `Link` from `react-router-dom`: Used for navigation to the detailed elevator page.
+- `ElevatorStatusCircle` and `ElevatorSpecs`: UI components used to display elevator status and specifications.
+
+### Interaction
+
+- Clicking on the `ElevatorCard` navigates to a detailed page displaying information about the selected elevator.
+
+### Test Cases
+
+- Renders a link to the correct location.
+- **UI Cards Children Tests:**
+    - **ElevatorSpecs Component:**
+        - Renders with correct specifications and operational state.
+        - Renders with correct warning state.
+        - Renders with correct out-of-order state.
+    - **ElevatorStatusCircle Component:**
+        - Renders with correct border color for each state.
+
+### ChartCard
+
+The `ChartCard` component displays a line chart representing various metrics related to elevator operation. It provides a visual representation of data such as door closed count, door closings count, door cycles count, door opened count, and door openings count.
+
+### Props
+
+| Name | Type | Description |
+| --- | --- | --- |
+| elevator | Elevator | An object containing details about the elevator instance. |
+
+### State
+
+| Name | Type | Description |
+| --- | --- | --- |
+| parentDimensions | object | Contains the width and height of the parent element. |
+
+### External Dependencies
+
+- `LineChart` from `@mui/x-charts/LineChart`: Used to render the line chart.
+
+### Interaction
+
+- Displays a line chart with elevator operation metrics.
+
+### Test Cases
+
+- Renders "No charts available for this elevator" if chart data is not present.
+- Renders the chart name if chart data is present.
+
+## Page Components
+
+### ElevatorByState
+
+The `ElevatorByState` component displays a list of elevators with a specific operational state. It fetches data from the API based on the state parameter in the URL and renders corresponding elevator cards.
+
+### State
+
+| Name | Type | Description |
+| --- | --- | --- |
+| elevators | Elevator[] | An array containing elevator objects fetched from the API. |
+| error | string | null | An error message if an error occurs during data fetching. |
+
+### URL Parameters
+
+| Name | Type | Description |
+| --- | --- | --- |
+| state | string | The state parameter obtained from the URL. |
+
+### Interaction
+
+- Clicking the "← Back to Dashboard" link navigates back to the dashboard.
+- Clicking on an  `ElevatorCard`  child component navigates to a detailed page displaying information about the selected elevator.
+
+### External Dependencies
+
+- `Link` from `react-router-dom`: Used for navigation back to the dashboard.
+- `getFromAPI` from `../../utils/getFromAPI`: Used to fetch elevator data from the API.
+- `useAuth0` from `@auth0/auth0-react`: Used for authentication and to get the access token.
+- `ElevatorCard` from `../cards/ElevatorCard`: Used to render individual elevator cards.
+- `GridContainer` from `../ui/GridContainer`: Used for layout purposes.
+
+### Test Cases
+
+- Fetches data from API and renders operational elevator cards.
+- Fetches data from API and renders warning elevator cards.
+- Fetches data from API and renders out-of-order elevator cards.
+
+### ElevatorById
+
+The `ElevatorById` component is responsible for displaying detailed information about a specific elevator identified by its ID. It fetches data from the API based on the provided ID parameter in the URL and renders the elevator details along with a chart displaying relevant information.
+
+### State
+
+| Name | Type | Description |
+| --- | --- | --- |
+| elevator | Elevator | null | The elevator object fetched from the API. |
+| error | string | null | An error message if an error occurs during data fetching. |
+
+### URL Parameters
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | string | The ID parameter obtained from the URL. |
+
+### Interaction
+
+- Clicking the "← Back to Dashboard" link navigates back to the dashboard.
+
+### External Dependencies
+
+- `Link` from `react-router-dom`: Used for navigation back to the dashboard.
+- `getFromAPI` from `../../utils/getFromAPI`: Utilized to fetch elevator data from the API.
+- `useAuth0` from `@auth0/auth0-react`: Utilized for authentication and to obtain the access token.
+- `ElevatorCard` from `../cards/ElevatorCard`: Renders detailed information about the elevator.
+- `ChartCard` from `../cards/ChartCard`: Displays a chart illustrating relevant data related to the elevator.
+
+### Test Cases
+
+- Fetches data from API and renders elevator card and chart card.
+
+### ElevatorOverview
+
+The `ElevatorOverview` component provides an overview of elevator states and recently visited elevators. It fetches data from the API to display the count of elevators in different operational states and a list of recently visited elevators.
+
+### State
+
+| Name | Type | Description |
+| --- | --- | --- |
+| elevatorStateCount | ElevatorStateCount | null | An object that stores how many elevators are in each state. |
+| elevators | RecentlyVisited[] | An array containing recently visited elevator objects fetched from the API. |
+| error | string | null | An error message if an error occurs during data fetching. |
+
+### Interaction
+
+- Clicking on an `ElevatorCard` child component navigates to a detailed page displaying information about the selected elevator.
+- Clicking on a `StateCard` child component navigates to a page that lists elevators in that particular state.
+
+### External Dependencies
+
+- `useAuth0` from `@auth0/auth0-react`: Used for authentication and obtaining the access token.
+- `getFromAPI` from `../../utils/getFromAPI`: Utilized to fetch elevator data from the API.
+- `StateCard` from `../cards/StateCard`: Renders a card displaying elevator state information.
+- `GridContainer` from `../ui/GridContainer`: Used for layout purposes.
+- `ElevatorCard` from `../cards/ElevatorCard`: Renders individual elevator cards.
+
+### Test Cases
+
+- Fetches data from API and renders elevator state cards.
+- Fetches data from API and renders recently visited elevator cards.
