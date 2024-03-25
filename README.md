@@ -59,7 +59,6 @@ git clone https://github.com/lucafisc/fullstack-elevator-dashboard
 
 ```bash
 cd server
-
 ```
 
 ### Create .env File
@@ -91,7 +90,6 @@ ISSUER_BASE_URL="<https://dev-a0oir8yzhmnp7jh3.us.auth0.com>"
 
 # Test user token used for accessing endpoints without authentication
 TEST_USER_TOKEN="auth0|65fd62f37e87f7a8c0a5454f"
-
 ```
 
 ### Install Dependencies
@@ -184,7 +182,7 @@ Example of including the authentication token in the request header:
 ```tsx
 headers: {
     Authorization: `Bearer ${token}`,
-},
+}
 ```
 
 Note that the `/test` route also provides access to the same endpoints without authentication.
@@ -325,7 +323,6 @@ GET http://localhost:3000/elevators/:id
         ]
     }
 }
-
 ```
 
 ## GET /elevators/state/:state
@@ -473,7 +470,6 @@ GET http://localhost:3000/elevators/recentlyVisited
     // ...
     // Additional recently visited elevators
 ]
-
 ```
 
 This response provides information about the 10 most recently visited elevators, including their specifications, operational state, and the timestamp of the visit.
