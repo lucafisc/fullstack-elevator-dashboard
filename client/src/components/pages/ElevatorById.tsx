@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getFromAPI } from "../../utils/getFromAPI";
 import ElevatorCard from "../cards/ElevatorCard";
 import ChartCard from "../cards/ChartCard";
+import { set } from "zod";
 
 export default function ElevatorById() {
   const [elevator, setElevator] = useState<Elevator | null>(null);
@@ -19,12 +20,17 @@ export default function ElevatorById() {
           endpoint: `/elevators/${id}`,
           getToken: getAccessTokenSilently,
         })) as Elevator;
+        console.log("response", response);
         const data = elevatorSchema.parse(response);
         setElevator(data);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("Invalid ID or error occurred");
+        setError(null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        if (error.response?.status === 403) {
+          setError("Invalid ID");
+        } else {
+          setError(null);
+        }
       }
     };
     fetchData();
