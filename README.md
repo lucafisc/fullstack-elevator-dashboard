@@ -35,14 +35,7 @@
     - [Welcome](#welcome)
     - [Components categories](#components-categories)
     - [Card Components](#card-components)
-        - [StateCard](#statecard)
-        - [ElevatorCard](#elevatorcard)
-        - [ChartCard](#chartcard)
     - [Page Components](#page-components)
-        - [ElevatorByState](#elevatorbystate)
-        - [ElevatorById](#elevatorbyid)
-        - [ElevatorOverview](#elevatoroverview)
-
 
 # Getting Started
 
