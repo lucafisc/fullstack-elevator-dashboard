@@ -20,7 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["@types/jest", "jest"]
+    "types": ["@types/jest", "jest"],
   },
   "include": ["src", "src/components/cards/__tests__/StateCard.test.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
