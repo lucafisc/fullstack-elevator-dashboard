@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getFromAPI } from "../../utils/getFromAPI";
 import ElevatorCard from "../cards/ElevatorCard";
 import ChartCard from "../cards/ChartCard";
-import { set } from "zod";
 
 export default function ElevatorById() {
   const [elevator, setElevator] = useState<Elevator | null>(null);
