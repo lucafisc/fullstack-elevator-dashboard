@@ -62,7 +62,7 @@ describe("ElevatorByState component", () => {
     render(
       <MemoryRouter initialEntries={["/elevators/state/operational"]}>
         <ElevatorByState />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -72,7 +72,7 @@ describe("ElevatorByState component", () => {
 
     elevators.forEach((elevator) => {
       const elevatorCard = screen.getByText(
-        elevator.specifications.deviceIdentificationNumber
+        elevator.specifications.deviceIdentificationNumber,
       );
       expect(elevatorCard).toBeInTheDocument();
       expect(elevator.operationalState.state).toBe("operational");
@@ -124,7 +124,7 @@ describe("ElevatorByState component", () => {
     render(
       <MemoryRouter initialEntries={["/elevators/state/warning"]}>
         <ElevatorByState />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -134,12 +134,12 @@ describe("ElevatorByState component", () => {
 
     elevators.forEach((elevator) => {
       const elevatorCard = screen.getByText(
-        elevator.specifications.deviceIdentificationNumber
+        elevator.specifications.deviceIdentificationNumber,
       );
       expect(elevatorCard).toBeInTheDocument();
       expect(elevator.operationalState.state).toBe("warning");
       const warningMessage = screen.getByText(
-        elevator.operationalState.warningMessage
+        elevator.operationalState.warningMessage,
       );
       expect(warningMessage).toBeInTheDocument();
     });
@@ -190,7 +190,7 @@ describe("ElevatorByState component", () => {
     render(
       <MemoryRouter initialEntries={["/elevators/state/warning"]}>
         <ElevatorByState />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -200,7 +200,7 @@ describe("ElevatorByState component", () => {
 
     elevators.forEach((elevator) => {
       const elevatorCard = screen.getByText(
-        elevator.specifications.deviceIdentificationNumber
+        elevator.specifications.deviceIdentificationNumber,
       );
       expect(elevatorCard).toBeInTheDocument();
       expect(elevator.operationalState.state).toBe("out-of-order");

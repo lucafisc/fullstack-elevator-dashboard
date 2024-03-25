@@ -13,7 +13,9 @@ const extractUserFromReq = (req: Request) => {
 const getUserElevators = async (req: Request) => {
   const user = extractUserFromReq(req);
   const userElevatorsIds = user.elevators;
-  const elevators = await Elevator.find({ _id: { $in: userElevatorsIds } }).select('-__v -chart');
+  const elevators = await Elevator.find({
+    _id: { $in: userElevatorsIds },
+  }).select("-__v -chart");
   return elevators;
 };
 
@@ -53,7 +55,9 @@ export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
   // Populate elevators
   const populatedElevators = await Promise.all(
     recentElevators.map(async (entry) => {
-      const elevator = await Elevator.findById(entry.elevator).select('-__v -chart').exec();
+      const elevator = await Elevator.findById(entry.elevator)
+        .select("-__v -chart")
+        .exec();
       return {
         elevator,
         visitedAt: entry.visitedAt,
@@ -93,7 +97,9 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
   }
 
   // Get elevator and populate chart
-  const elevator = await Elevator.findById(elevatorId).populate({path: "chart", select: "-__v"}).select('-__v');
+  const elevator = await Elevator.findById(elevatorId)
+    .populate({ path: "chart", select: "-__v" })
+    .select("-__v");
   if (!elevator) {
     res.status(404);
     res.json({ message: "Elevator not found" });

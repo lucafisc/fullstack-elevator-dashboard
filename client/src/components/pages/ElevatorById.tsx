@@ -8,6 +8,8 @@ import ChartCard from "../cards/ChartCard";
 
 export default function ElevatorById() {
   const [elevator, setElevator] = useState<Elevator | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const { id } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
@@ -22,6 +24,7 @@ export default function ElevatorById() {
         console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError("Invalid ID or error occurred");
       }
     };
     fetchData();
@@ -30,9 +33,15 @@ export default function ElevatorById() {
   return (
     <>
       <Link to="/">← Back to Dashboard</Link>
-      <h1 className="py-5 text-xl">Elevator Detail</h1>
-      {elevator && <ElevatorCard elevator={elevator} />}
-      {elevator && <ChartCard elevator={elevator} />}
+      {error ? (
+        <h1 className="py-5 text-xl">{error}</h1>
+      ) : (
+        <>
+          <h1 className="py-5 text-xl">Elevator Detail</h1>
+          {elevator && <ElevatorCard elevator={elevator} />}
+          {elevator && <ChartCard elevator={elevator} />}
+        </>
+      )}
     </>
   );
 }

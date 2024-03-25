@@ -27,7 +27,8 @@ export default function ElevatorSpecs({ elevator }: Props) {
   return (
     <div
       data-testid="elevator-specs"
-     className="flex flex-col sm:flex-row justify-between w-full">
+      className="flex flex-col sm:flex-row justify-between w-full"
+    >
       <div>
         <h2 className="font-bold text-xl">
           {specifications.deviceIdentificationNumber}

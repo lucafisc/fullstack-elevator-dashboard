@@ -9,6 +9,7 @@ import GridContainer from "../ui/GridContainer";
 
 export default function ElevatorByState() {
   const [elevators, setElevators] = useState<Elevator[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const { state } = useParams();
   const { getAccessTokenSilently } = useAuth0();
 
@@ -21,8 +22,10 @@ export default function ElevatorByState() {
         })) as Elevator[];
         const data = response.map((elevator) => elevatorSchema.parse(elevator));
         setElevators(data);
+        setError(null);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError("Invalid state or error occurred");
       }
     };
     fetchData();
@@ -31,12 +34,18 @@ export default function ElevatorByState() {
   return (
     <>
       <Link to="/">← Back to Dashboard</Link>
-      <h1 className="py-5 text-xl">{`List of elevators with state ${state}`}</h1>
-      <GridContainer>
-        {elevators.map((elevator) => (
-          <ElevatorCard key={elevator._id} elevator={elevator} />
-        ))}
-      </GridContainer>
+      {error ? (
+        <h1 className="py-5 text-xl">{error}</h1>
+      ) : (
+        <>
+          <h1 className="py-5 text-xl">{`List of elevators with state ${state}`}</h1>
+          <GridContainer>
+            {elevators.map((elevator) => (
+              <ElevatorCard key={elevator._id} elevator={elevator} />
+            ))}
+          </GridContainer>
+        </>
+      )}
     </>
   );
 }

@@ -63,8 +63,8 @@ describe("ElevatorById component", () => {
     mockAxios.get.mockResolvedValue({ data: elevator });
     render(
       <MemoryRouter initialEntries={["/elevators/1"]}>
-          <ElevatorById />
-      </MemoryRouter>
+        <ElevatorById />
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -72,7 +72,9 @@ describe("ElevatorById component", () => {
       expect(mockAxios.get).toHaveBeenCalledTimes(1);
     });
 
-    const elevatorCard = screen.getByText(elevator.specifications.deviceIdentificationNumber);
+    const elevatorCard = screen.getByText(
+      elevator.specifications.deviceIdentificationNumber,
+    );
     expect(elevatorCard).toBeInTheDocument();
     const chartCard = screen.getByText("Elevator Data");
     expect(chartCard).toBeInTheDocument();

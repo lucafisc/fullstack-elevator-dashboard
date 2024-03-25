@@ -5,9 +5,7 @@ import axios from "axios";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/jest-globals";
 import ElevatorOverview from "../ElevatorOverview";
-import {
-    RecentlyVisited,
-  } from "../../../types/ElevatorType";
+import { RecentlyVisited } from "../../../types/ElevatorType";
 
 jest.mock("@auth0/auth0-react", () => ({
   ...jest.requireActual("@auth0/auth0-react"),
@@ -24,10 +22,49 @@ describe("ElevatorOverview component", () => {
 
   test("fetches state data from API and renders StateCard components", async () => {
     const elevatorStateCount = {
-      "operational": 5,
-      "warning": 3,
+      operational: 5,
       "out-of-order": 2,
+      warning: 3,
     };
+
+    const elevators: RecentlyVisited[] = [
+      {
+        elevator: {
+          _id: "1",
+          specifications: {
+            deviceIdentificationNumber: "ID123",
+            address: "123 Main St",
+            manufacturerName: "ABC Elevators",
+            fabricationNumber: "FAB456",
+            productionYear: 2023,
+            elevatorType: "Passenger",
+          },
+          operationalState: {
+            floorNumber: 5,
+            state: "operational",
+          },
+        },
+        visitedAt: "2024-03-24T12:00:00Z",
+      },
+      {
+        elevator: {
+          _id: "2",
+          specifications: {
+            deviceIdentificationNumber: "ID456",
+            address: "456 Elm St",
+            manufacturerName: "DEF Elevators",
+            fabricationNumber: "FAB789",
+            productionYear: 2024,
+            elevatorType: "Freight",
+          },
+          operationalState: {
+            floorNumber: 3,
+            state: "operational",
+          },
+        },
+        visitedAt: "2024-03-24T12:00:00Z",
+      },
+    ];
 
     const getTokenMock = jest.fn().mockResolvedValue("mockToken");
 
@@ -35,12 +72,14 @@ describe("ElevatorOverview component", () => {
       getAccessTokenSilently: getTokenMock,
     });
 
-    mockAxios.get.mockResolvedValue({ data: elevatorStateCount });
+    mockAxios.get
+      .mockResolvedValueOnce({ data: elevatorStateCount })
+      .mockResolvedValueOnce({ data: elevators });
 
     render(
       <MemoryRouter>
         <ElevatorOverview />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -50,57 +89,56 @@ describe("ElevatorOverview component", () => {
     Object.entries(elevatorStateCount).forEach(([state, count]) => {
       const stateCard = screen.getByText(`Total ${state}`);
       const countElement = screen.getByText(count.toString());
-        expect(countElement).toBeInTheDocument();
+      expect(countElement).toBeInTheDocument();
       expect(stateCard).toBeInTheDocument();
     });
   });
 
   test("fetches recently viewed elevators from API and renders ElevatorCard components", async () => {
     const elevatorStateCount = {
-        "operational": 5,
-        "warning": 3,
-        "out-of-order": 2,
-      };
-    
+      operational: 5,
+      warning: 3,
+      "out-of-order": 2,
+    };
 
-    const elevators : RecentlyVisited[] = [
-        {
-            elevator: {
-            _id: "1",
-            specifications: {
-                deviceIdentificationNumber: "ID123",
-                address: "123 Main St",
-                manufacturerName: "ABC Elevators",
-                fabricationNumber: "FAB456",
-                productionYear: 2023,
-                elevatorType: "Passenger",
-            },
-            operationalState: {
-                floorNumber: 5,
-                state: "operational",
-            },
-            },
-            visitedAt: "2024-03-24T12:00:00Z",
+    const elevators: RecentlyVisited[] = [
+      {
+        elevator: {
+          _id: "1",
+          specifications: {
+            deviceIdentificationNumber: "ID123",
+            address: "123 Main St",
+            manufacturerName: "ABC Elevators",
+            fabricationNumber: "FAB456",
+            productionYear: 2023,
+            elevatorType: "Passenger",
+          },
+          operationalState: {
+            floorNumber: 5,
+            state: "operational",
+          },
         },
-        {
-            elevator: {
-            _id: "2",
-            specifications: {
-                deviceIdentificationNumber: "ID456",
-                address: "456 Elm St",
-                manufacturerName: "DEF Elevators",
-                fabricationNumber: "FAB789",
-                productionYear: 2024,
-                elevatorType: "Freight",
-            },
-            operationalState: {
-                floorNumber: 3,
-                state: "operational",
-            },
-            },
-            visitedAt: "2024-03-24T12:00:00Z",
+        visitedAt: "2024-03-24T12:00:00Z",
+      },
+      {
+        elevator: {
+          _id: "2",
+          specifications: {
+            deviceIdentificationNumber: "ID456",
+            address: "456 Elm St",
+            manufacturerName: "DEF Elevators",
+            fabricationNumber: "FAB789",
+            productionYear: 2024,
+            elevatorType: "Freight",
+          },
+          operationalState: {
+            floorNumber: 3,
+            state: "operational",
+          },
         },
-        ];
+        visitedAt: "2024-03-24T12:00:00Z",
+      },
+    ];
 
     const getTokenMock = jest.fn().mockResolvedValue("mockToken");
 
@@ -108,14 +146,14 @@ describe("ElevatorOverview component", () => {
       getAccessTokenSilently: getTokenMock,
     });
 
-    mockAxios.get.mockResolvedValueOnce({ data: elevators })
-               .mockResolvedValueOnce({ data: elevatorStateCount });
-
+    mockAxios.get
+      .mockResolvedValueOnce({ data: elevatorStateCount })
+      .mockResolvedValueOnce({ data: elevators });
 
     render(
       <MemoryRouter>
         <ElevatorOverview />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -124,7 +162,7 @@ describe("ElevatorOverview component", () => {
 
     elevators.forEach((elevator) => {
       const elevatorCard = screen.getByText(
-        elevator.elevator.specifications.deviceIdentificationNumber
+        elevator.elevator.specifications.deviceIdentificationNumber,
       );
       expect(elevatorCard).toBeInTheDocument();
     });

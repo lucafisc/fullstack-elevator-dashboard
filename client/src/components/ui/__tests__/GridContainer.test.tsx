@@ -9,7 +9,7 @@ describe("GridContainer component", () => {
       <GridContainer>
         <div>Child 1</div>
         <div>Child 2</div>
-      </GridContainer>
+      </GridContainer>,
     );
 
     const gridContainerElement = getByTestId("grid-container");
@@ -19,7 +19,7 @@ describe("GridContainer component", () => {
 
   test("renders no children", () => {
     const { getByTestId } = render(
-      <GridContainer children={undefined}></GridContainer>
+      <GridContainer children={undefined}></GridContainer>,
     );
 
     const gridContainerElement = getByTestId("grid-container");
