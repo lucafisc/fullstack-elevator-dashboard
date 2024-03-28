@@ -12,6 +12,7 @@ import { getUserInfo, getTestUserInfo } from "./controllers/userController";
 dotenv.config();
 const port = process.env.PORT || 3000;
 const mongoDB = process.env.DB_URL;
+const issuer = process.env.ISSUER_BASE_URL;
 const app: Express = express();
 
 // Connect to MongoDB
@@ -26,10 +27,10 @@ const jwtCheck = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: "https://dev-a0oir8yzhmnp7jh3.us.auth0.com/.well-known/jwks.json",
+    jwksUri: `${issuer}.well-known/jwks.json`,
   }),
   audience: "this is a unique identifier",
-  issuer: "https://dev-a0oir8yzhmnp7jh3.us.auth0.com/",
+  issuer: issuer,
   algorithms: ["RS256"],
 }).unless({ path: ["/"] });
 
