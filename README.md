@@ -43,6 +43,8 @@
 Before getting started, ensure you have the following prerequisites installed:
 
 - Docker and docker-compose
+- Node.js and npm (Node Package Manager)
+- Git
 
 ### Clone this repository
 
