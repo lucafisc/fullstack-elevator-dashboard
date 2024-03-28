@@ -71,22 +71,14 @@ touch .env
 
 ```bash
 # Port number on which the server will run
+# Port number on which the server will run
 PORT=3000
-
-# Base URL of the server
-BASE_URL="<http://localhost>"
 
 # MongoDB connection URL including credentials and database name
 DB_URL="mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0"
 
-# Secret key used for JWT token generation and verification
-SECRET="a95f6d06ce7cb693c9c4cc18a7dd412e08ef1b94edbe8b8c6de85dfb68778fa4"
-
-# Auth0 client ID for authentication
-CLIENT_ID="BO0YUnm0ZPx1t08sJaqtjBWCGQq6YD1J"
-
 # Auth0 issuer base URL for authentication
-ISSUER_BASE_URL="<https://dev-a0oir8yzhmnp7jh3.us.auth0.com>"
+ISSUER_BASE_URL="https://dev-a0oir8yzhmnp7jh3.us.auth0.com/"
 
 # Test user token used for accessing endpoints without authentication
 TEST_USER_TOKEN="auth0|65fd62f37e87f7a8c0a5454f"
