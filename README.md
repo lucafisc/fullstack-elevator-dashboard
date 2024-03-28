@@ -43,9 +43,7 @@
 
 Before getting started, ensure you have the following prerequisites installed:
 
-- Node.js and npm (Node Package Manager)
-- MongoDB
-- Git
+- Docker and docker-compose
 
 ### Clone this repository
 
@@ -54,12 +52,6 @@ git clone https://github.com/lucafisc/fullstack-elevator-dashboard
 ```
 
 ## Setting up the Server
-
-### **Navigate to Server Directory:**
-
-```bash
-cd server
-```
 
 ### Create .env File
 
@@ -70,31 +62,19 @@ touch .env
 ```
 
 ```bash
-# Port number on which the server will run
-# Port number on which the server will run
-PORT=3000
-
-# MongoDB connection URL including credentials and database name
-DB_URL="mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0"
-
-# Auth0 issuer base URL for authentication
-ISSUER_BASE_URL="https://dev-a0oir8yzhmnp7jh3.us.auth0.com/"
-
-# Test user token used for accessing endpoints without authentication
-TEST_USER_TOKEN="auth0|65fd62f37e87f7a8c0a5454f"
+DB_URL=mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0
+ISSUER_BASE_URL=https://dev-a0oir8yzhmnp7jh3.us.auth0.com/
+TEST_USER_TOKEN=auth0|65fd62f37e87f7a8c0a5454f
 ```
 
-### Install Dependencies
+### Run docker compose
 
 ```bash
-npm install
+docker-compose up
 ```
 
-### Start server
-
-```tsx
-npm start
-```
+### Access dashboard
+You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided above to login.
 
 ### Accessing Endpoints
 
@@ -108,37 +88,26 @@ npm start
 | skyward-peaks@test.com | ElapseJam88 |
 | elevate-industries@test.com | BlueStudio88 |
 
-## Setting up the Dashboard
-
-If you are still located in `/server` navigate back one directory with `cd ..` and enter the client directory:
-
-```
-cd client
-```
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Start the dashboard
-
-```
-npm run start
-```
-
-You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided above to login.
-
 ## Running tests
 
-Tests can be run on the server directory using:
+Tests can be run on the server via Jest.
+Make sure you setup the .env file in the previous step.
+First install the necessary dependencies:
+
+```
+npm install
+```
 
 ```
 npm run test
 ```
 
-And in the client directory using the same command:
+And in the client directory, install the dependencies:
+```
+npm install
+```
+
+And the run the tests with the same command.
 
 ```
 npm run test

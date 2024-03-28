@@ -7,6 +7,10 @@ services:
     command: |
       npm start
     container_name: server
+    environment:
+      - DB_URL=${DB_URL:?variable DB_URL is missing}
+      - ISSUER_BASE_URL=${ISSUER_BASE_URL:?variable ISSUER_BASE_URL is missing}
+      - TEST_USER_TOKEN=${TEST_USER_TOKEN:?variable TEST_USER_TOKEN is missing}
     ports:
       - "3000:3000"
     networks:
