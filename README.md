@@ -50,7 +50,7 @@ Before getting started, ensure you have the following prerequisites installed:
 ### Clone this repository
 
 ```
-git clone https://github.com/lucafisc/fullstack-elevator-dashboard
+git clone git@github.com:lucafisc/fullstack-elevator-dashboard.git
 ```
 
 ## Setting up the Server
