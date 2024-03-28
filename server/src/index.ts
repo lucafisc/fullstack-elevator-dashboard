@@ -10,7 +10,7 @@ import { getUserInfo, getTestUserInfo } from "./controllers/userController";
 
 // Load environment variables
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = 3000;
 const mongoDB = process.env.DB_URL;
 const issuer = process.env.ISSUER_BASE_URL;
 const app: Express = express();
