@@ -13,8 +13,7 @@
 - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Clone this repository](#clone-this-repository)
-    - [Setting up the Server](#setting-up-the-server)
-    - [Setting up the Dashboard](#setting-up-the-dashboard)
+    - [Setting up](#setting-up)
     - [Running tests](#running-tests)
 - [API](#api)
     - [Introduction](#introduction)
@@ -51,7 +50,7 @@ Before getting started, ensure you have the following prerequisites installed:
 git clone https://github.com/lucafisc/fullstack-elevator-dashboard
 ```
 
-## Setting up the Server
+## Setting up
 
 ### Create .env File
 
@@ -74,12 +73,7 @@ docker-compose up
 ```
 
 ### Access dashboard
-You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided above to login.
-
-### Accessing Endpoints
-
-- Authenticated Routes: The main route **`/elevators`** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
-- Test Route: Use the **`/test`** route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
+You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided below to login.
 
 ### Test Users for Protected Routes
 
@@ -87,6 +81,11 @@ You will be able to visit the dashboard at [`http://localhost:4242/`](http://loc
 | --- | --- |
 | skyward-peaks@test.com | ElapseJam88 |
 | elevate-industries@test.com | BlueStudio88 |
+
+### Accessing Endpoints
+- Authenticated Routes: The main route **`/elevators`** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
+- Test Route: Use the **`/test`** route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
+
 
 ## Running tests
 
@@ -102,13 +101,10 @@ npm install
 npm run test
 ```
 
-And in the client directory, install the dependencies:
+And in the client directory, do the same:
 ```
 npm install
 ```
-
-And the run the tests with the same command.
-
 ```
 npm run test
 ```
