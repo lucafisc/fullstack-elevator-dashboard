@@ -56,7 +56,7 @@ git clone git@github.com:lucafisc/fullstack-elevator-dashboard.git
 
 ### Create .env File
 
-Create a new file named `.env` in the server directory and fill in the following values:
+Create a new file named `.env` in the root directory and fill in the following values:
 
 ```
 touch .env
