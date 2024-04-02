@@ -62,22 +62,20 @@ export const getRecentlyVisitedElevators = asyncHandler(async (req, res) => {
 // GET elevators by state
 export const getElevatorsByState = asyncHandler(async (req, res) => {
   const state = req.params.state as StateEnum;
-  console.log(`state: ${state}`)
-  const stateElevators = await getOrSetCache(
-    `elevatorsByState:${state}:${req.auth.sub}`,
-    async () => {
-      if (!Object.values(stateEnum).includes(state)) {
-        res.status(404);
-        res.json({ message: "Not a valid state" });
-      }
-      const elevators = await getUserElevators(req);
-      const filteredElevators = elevators.filter(
-        (elevator) => elevator.operationalState.state === state
+  if (!Object.values(stateEnum).includes(state)) {
+    res.status(404);
+    res.json({ message: "Not a valid state" });
+  }
+
+  const states = await getOrSetCache(`elevatorsBy:${state}:${req.auth.sub}`, async () => {
+    const elevators = await getUserElevators(req);
+    const filteredElevators = elevators.filter(
+      (elevator) => elevator.operationalState.state === state
       );
-      return filteredElevators;
-    }
-  );
-  res.json(stateElevators);
+    return filteredElevators;
+  });
+
+  res.json(states);
 });
 
 // GET elevator by id
