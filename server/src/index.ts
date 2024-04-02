@@ -23,11 +23,9 @@ mongoose.connection.on("error", (error: Error) => console.error(error));
 
 let clientRedis: ReturnType<typeof createClient>;
 async function connectRedis() {
-  clientRedis = await createClient(
-    {
-      url: process.env.REDIS_URL,
-    }
-  )
+  clientRedis = await createClient({
+    url: `redis://host.docker.internal:6379`
+  })
   .on('error', err => console.log('Redis Client Error', err))
   .on('connect', () => console.log('Redis Client Connected'))
   .connect();

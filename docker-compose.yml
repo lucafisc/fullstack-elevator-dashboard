@@ -1,17 +1,13 @@
 services:
-  redis:
-    image: redis
-    container_name: redis
+  cache:
+    image: redis:7.2.4-alpine
+    container_name: cache
     ports:
-      - "6380:6380"
-    expose:
-      - "6380"
+      - "6379:6379"
+    networks:
       - elevator_network
-    command: --port 6380
 
   server:
-    depends_on:
-      - redis
     restart: always
     build:
       context: server
@@ -23,11 +19,14 @@ services:
       - DB_URL=${DB_URL:?variable DB_URL is missing}
       - ISSUER_BASE_URL=${ISSUER_BASE_URL:?variable ISSUER_BASE_URL is missing}
       - TEST_USER_TOKEN=${TEST_USER_TOKEN:?variable TEST_USER_TOKEN is missing}
-      - REDIS_URL=${REDIS_URL:?variable REDIS_URL is missing}
     ports:
       - "3000:3000"
+    links:
+      - cache
     networks:
       - elevator_network
+    depends_on:
+      - cache
   
   client:
     restart: always
@@ -45,3 +44,6 @@ services:
 
 networks:
   elevator_network:
+
+volumes:
+  redis_data:
