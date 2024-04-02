@@ -3,11 +3,11 @@
 ![screenshot.png](./images/screenshot.png)
 
 
-> A full-stack web app implemented using Express with TypeScript for the backend, using Auth0 for safeguarding protected routes. MongoDB handles database storage. API endpoints are tested with Jest and cached with Redis.
+> The project uses Docker 🐳 and a docker-compose file to containerize all elements, ensuring easy deployment and consistency across environments.
 
-> React with TypeScript are used for the frontend, with user authentication using Auth0 and mobile-first design. Tested with Jest and React testing library.
+> For the backend, Express with TypeScript is implemented, utilizing Auth0 for protecting routes. MongoDB is used for storing data, and API endpoints are tested with Jest and cached with Redis.
 
-> The project utilizes Docker 🐳 and a docker-compose file to containerize all elements, ensuring seamless deployment and consistency across environments.
+> On the frontend, React with TypeScript is employed, featuring user authentication via Auth0 and a mobile-first design. Frontend components are tested with Jest and the React Testing Library.
 
 ## Index
 
