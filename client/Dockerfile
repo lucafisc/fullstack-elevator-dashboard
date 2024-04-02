@@ -9,7 +9,3 @@ RUN npm ci
 COPY . .
 
 RUN npm run build
-
-# EXPOSE 4242
-
-# CMD ["npx", "http-server", "./dist", "-p", "4242"]

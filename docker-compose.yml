@@ -1,4 +1,16 @@
 services:
+  db:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER:?variable DB_USER is missing}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD:?variable DB_PASSWORD is missing}
+      - MONGO_INITDB_DATABASE=${DB_NAME:?variable DB_NAME is missing}
+    ports:
+      - "27017:27017"
+    networks:
+      - elevator_network
+
   server:
     restart: always
     build:
@@ -13,6 +25,8 @@ services:
       - TEST_USER_TOKEN=${TEST_USER_TOKEN:?variable TEST_USER_TOKEN is missing}
     ports:
       - "3000:3000"
+    depends_on:
+      - db
     networks:
       - elevator_network
   
