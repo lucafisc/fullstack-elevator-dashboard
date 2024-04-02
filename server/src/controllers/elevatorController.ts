@@ -3,6 +3,7 @@ import { Elevator, stateEnum, ElevatorInterface } from "../db/elevator";
 import type { StateEnum } from "../db/elevator";
 import asyncHandler from "express-async-handler";
 import { Request } from "express";
+import { clientRedis } from "../index";
 
 const extractUserFromReq = (req: Request) => {
   return req.user as typeof User & { elevators: string[] } & {
@@ -11,11 +12,25 @@ const extractUserFromReq = (req: Request) => {
 };
 
 const getUserElevators = async (req: Request) => {
+  const cachedElevators = await clientRedis.get(`elevators:${req.auth.sub}`);
+  if (cachedElevators) {
+    console.log("Cache hit");
+    const parsedElevators = JSON.parse(cachedElevators) as ElevatorInterface[];
+    return parsedElevators;
+  } else {
+    console.log("Cache miss");
+  }
+
   const user = extractUserFromReq(req);
   const userElevatorsIds = user.elevators;
   const elevators = await Elevator.find({
     _id: { $in: userElevatorsIds },
-  }).select("-__v -chart");
+  }).select("-__v -chart") as ElevatorInterface[];
+
+  // Cache
+  await clientRedis.set(
+    `elevators:${req.auth.sub}`, JSON.stringify(elevators)
+  );
   return elevators;
 };
 

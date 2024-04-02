@@ -5,8 +5,8 @@ import cors from "cors";
 const { expressjwt: jwt } = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
-import axios from "axios";
 import { getUserInfo, getTestUserInfo } from "./controllers/userController";
+import { createClient } from 'redis';
 
 // Load environment variables
 dotenv.config();
@@ -20,6 +20,22 @@ mongoose.set("strictPopulate", false);
 mongoose.Promise = Promise;
 mongoose.connect(mongoDB);
 mongoose.connection.on("error", (error: Error) => console.error(error));
+
+let clientRedis: ReturnType<typeof createClient>;
+async function connectRedis() {
+  clientRedis = await createClient(
+    {
+      url: process.env.REDIS_URL,
+    }
+  )
+  .on('error', err => console.log('Redis Client Error', err))
+  .on('connect', () => console.log('Redis Client Connected'))
+  .connect();
+
+await clientRedis.set('key', 'ana');
+const value = await clientRedis.get('key');
+}
+connectRedis();
 
 // JWT middleware configuration
 const jwtCheck = jwt({
@@ -61,4 +77,4 @@ if (require.main === module) {
   app.listen(port, () => console.log(`Server is running on port ${port}`));
 }
 
-export default app;
+export { app, clientRedis };
