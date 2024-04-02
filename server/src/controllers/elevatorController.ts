@@ -2,8 +2,12 @@ import { User } from "../db/user";
 import { Elevator, stateEnum, ElevatorInterface } from "../db/elevator";
 import type { StateEnum } from "../db/elevator";
 import asyncHandler from "express-async-handler";
-import { getOrSetCache } from "../utils/cacheUtils";
-import { extractUserFromReq, getUserElevators } from "../utils/controllerUtils";
+import { clearCache, getOrSetCache } from "../utils/cacheUtils";
+import {
+  extractUserFromReq,
+  getUserElevators,
+  registerVisit,
+} from "../utils/controllerUtils";
 
 // GET all elevators
 export const getElevators = asyncHandler(async (req, res) => {
@@ -65,17 +69,21 @@ export const getElevatorsByState = asyncHandler(async (req, res) => {
   if (!Object.values(stateEnum).includes(state)) {
     res.status(404);
     res.json({ message: "Not a valid state" });
+    return;
   }
 
-  const states = await getOrSetCache(`elevatorsBy:${state}:${req.auth.sub}`, async () => {
-    const elevators = await getUserElevators(req);
-    const filteredElevators = elevators.filter(
-      (elevator) => elevator.operationalState.state === state
+  const elevatorsByState = await getOrSetCache(
+    `elevatorsBy:${state}:${req.auth.sub}`,
+    async () => {
+      const elevators = await getUserElevators(req);
+      const filteredElevators = elevators.filter(
+        (elevator) => elevator.operationalState.state === state
       );
-    return filteredElevators;
-  });
+      return filteredElevators;
+    }
+  );
 
-  res.json(states);
+  res.json(elevatorsByState);
 });
 
 // GET elevator by id
@@ -88,44 +96,22 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     res.json({ message: "Elevator does not belong to user" });
     return;
   }
-
-  // Get elevator and populate chart
-  const elevator = await Elevator.findById(elevatorId)
+  
+  const elevatorDetail = await getOrSetCache(`elevator:${elevatorId}`, async () => {
+    // Get elevator and populate chart
+    const elevator = await Elevator.findById(elevatorId)
     .populate({ path: "chart", select: "-__v" })
     .select("-__v");
-  if (!elevator) {
-    res.status(404);
-    res.json({ message: "Elevator not found" });
-    return;
-  }
+    if (!elevator) {
+      res.status(404);
+      res.json({ message: "Elevator not found" });
+      return;
+    }
+    return elevator;
+  });
+    
+  await registerVisit(req, elevatorId);
+  clearCache(`recently:${req.auth.sub}`);
 
-  // Register visit
-  const visitedAt = new Date();
-  const UserModel = await User.findOne({ "userInfo.auth0Id": req.auth.sub });
-  const existingIndex = UserModel.recentlyViewed.findIndex(
-    (entry) => entry.elevator.toString() === elevatorId
-  );
-  if (existingIndex !== -1) {
-    // Existing elevator, update visitedAt and push to end
-    const existingEntry = UserModel.recentlyViewed.splice(existingIndex, 1)[0];
-    existingEntry.visitedAt = visitedAt;
-    UserModel.recentlyViewed.push(existingEntry);
-  } else {
-    // New elevator, push to end
-    UserModel.recentlyViewed.push({
-      elevator: elevatorId,
-      visitedAt: visitedAt,
-    });
-  }
-  // Keep only the last 10
-  const maxLength = 10;
-  if (UserModel.recentlyViewed.length > maxLength) {
-    const excess = UserModel.recentlyViewed.length - maxLength;
-    UserModel.recentlyViewed.splice(0, excess);
-  }
-
-  // Register visit
-  await UserModel.save();
-
-  res.json(elevator);
+  res.json(elevatorDetail);
 });
