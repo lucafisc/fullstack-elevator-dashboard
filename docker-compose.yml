@@ -33,10 +33,10 @@ services:
     build:
       context: client
       dockerfile: Dockerfile
-    command: "npx http-server ./dist -p 4243"
+    command: "npx http-server ./dist -p 4242"
     container_name: client
     ports:
-      - "4243:4243"
+      - ":4242"
     depends_on:
       - server
     networks:
