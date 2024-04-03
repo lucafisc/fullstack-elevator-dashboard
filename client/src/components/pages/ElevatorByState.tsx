@@ -29,7 +29,6 @@ export default function ElevatorByState() {
         setElevators(data);
         setError(null);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError("An error occurred while fetching data.");
       }
     };

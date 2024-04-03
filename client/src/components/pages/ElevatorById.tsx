@@ -27,7 +27,6 @@ export default function ElevatorById() {
           endpoint: `/elevators/${id}`,
           getToken: getAccessTokenSilently,
         })) as Elevator;
-        console.log("response", response);
         const data = elevatorSchema.parse(response);
         setElevator(data);
         setError(null);
