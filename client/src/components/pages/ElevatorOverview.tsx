@@ -40,7 +40,6 @@ export default function ElevatorOverview() {
         recentData.reverse();
         setElevators(recentData);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError("Error fetching elevator data");
       }
     };
