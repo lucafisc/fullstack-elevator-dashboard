@@ -3,17 +3,22 @@ import { Link, useParams } from "react-router-dom";
 import { getFromAPI } from "../../utils/getFromAPI";
 import { useAuth0 } from "@auth0/auth0-react";
 import type { Elevator } from "../../types/ElevatorType";
-import { elevatorSchema } from "../../types/ElevatorType";
+import { elevatorSchema, StateSchema } from "../../types/ElevatorType";
 import ElevatorCard from "../cards/ElevatorCard";
 import GridContainer from "../ui/GridContainer";
 
 export default function ElevatorByState() {
   const [elevators, setElevators] = useState<Elevator[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { state } = useParams();
   const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
+  const { state } = useParams();
+    
+    useEffect(() => {
+    const validateState = StateSchema.safeParse(state);
+    if (!validateState.success) {
+      setError("Invalid state");
+      return;
+    }
     const fetchData = async () => {
       try {
         const response = (await getFromAPI({
@@ -25,7 +30,7 @@ export default function ElevatorByState() {
         setError(null);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setError("Invalid state or error occurred");
+        setError("An error occurred while fetching data.");
       }
     };
     fetchData();
