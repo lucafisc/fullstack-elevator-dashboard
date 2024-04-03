@@ -112,6 +112,7 @@ export const getElevatorById = asyncHandler(async (req, res, next) => {
     
   await registerVisit(req, elevatorId);
   clearCache(`recently:${req.auth.sub}`);
+  clearCache(`user:${req.auth.sub}`);
 
   res.json(elevatorDetail);
 });
