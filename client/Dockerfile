@@ -1,15 +1,10 @@
-FROM node:18-alpine
-
+FROM node:18-alpine as build
 WORKDIR /usr/src/app
-
 COPY ./package*.json ./
-
 RUN npm ci 
-
 COPY . .
-
 RUN npm run build
 
-# EXPOSE 4242
-
-# CMD ["npx", "http-server", "./dist", "-p", "4242"]
+FROM nginx
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/app/dist /user/share/nginx/html
