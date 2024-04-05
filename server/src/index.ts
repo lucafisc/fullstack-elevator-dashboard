@@ -2,6 +2,8 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+import https from "https";
+import fs from "fs";
 const { expressjwt: jwt } = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
@@ -71,8 +73,16 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// HTTPS server configuration
+const httpsOptions = {
+  key: fs.readFileSync("./ssl/private_key.pem"),
+  cert: fs.readFileSync("./ssl/certificate.crt"),
+};
+
+const httpsServer = https.createServer(httpsOptions, app);
+
 if (require.main === module) {
-  app.listen(port, () => console.log(`Server is running on port ${port}`));
+  httpsServer.listen(port, () => console.log(`HTTPS Server is running on port ${port}`));
 }
 
 export { app, clientRedis };

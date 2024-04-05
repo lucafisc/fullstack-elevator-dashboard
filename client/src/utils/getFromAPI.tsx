@@ -8,11 +8,13 @@ type Props = {
 
 export async function getFromAPI({ endpoint, getToken }: Props) {
   const token = await getToken();
-  const response = await axios.get(`http://localhost:3000${endpoint}`, {
+
+  const response = await axios.get(`https://localhost:3000${endpoint}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+
   const data = response.data;
   console.log("Data from API:", data);
   return data;
