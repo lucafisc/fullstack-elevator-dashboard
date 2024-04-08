@@ -25,12 +25,14 @@ mongoose.connection.on("error", (error: Error) => console.error(error));
 
 let clientRedis: ReturnType<typeof createClient>;
 async function connectRedis() {
+  const domain = process.env.NODE_ENV === 'test' ? 'localhost' : 'cache';
   clientRedis = await createClient({
-    url: `redis://cache:6379`
+    url: `redis://${domain}:6379`
   })
   .on('error', err => console.log('Redis Client Error', err))
   .on('connect', () => console.log('Redis Client Connected'))
   .connect();
+
 
 await clientRedis.set('key', 'ana');
 const value = await clientRedis.get('key');
@@ -73,7 +75,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-console.log("NODE_ENV", process.env.NODE_ENV);
 // HTTPS server configuration
 if (process.env.NODE_ENV === "production") {
   // HTTPS server configuration

@@ -113,6 +113,11 @@ First install the necessary dependencies:
 npm install
 ```
 
+Then run a redis server for caching:
+```
+docker run --name test-redis -d -p 6379:6379 redis:7.2.4-alpine
+```
+
 ```
 npm run test
 ```
