@@ -52,7 +52,6 @@ describe("ElevatorByState component", () => {
         },
       },
     ];
-
     const getTokenMock = jest.fn().mockResolvedValue("mockToken");
 
     (useAuth0 as jest.Mock).mockReturnValue({
@@ -60,10 +59,12 @@ describe("ElevatorByState component", () => {
     });
     mockAxios.get.mockResolvedValue({ data: elevators });
     render(
-      <MemoryRouter initialEntries={["/elevators/state/operational"]}>
-        <ElevatorByState />
+      <MemoryRouter initialEntries={["/state/operational"]}>
+        <ElevatorByState 
+        />
       </MemoryRouter>,
     );
+
 
     await waitFor(() => {
       expect(getTokenMock).toHaveBeenCalledTimes(1);
@@ -122,7 +123,7 @@ describe("ElevatorByState component", () => {
     });
     mockAxios.get.mockResolvedValue({ data: elevators });
     render(
-      <MemoryRouter initialEntries={["/elevators/state/warning"]}>
+      <MemoryRouter initialEntries={["/state/warning"]}>
         <ElevatorByState />
       </MemoryRouter>,
     );
@@ -188,7 +189,7 @@ describe("ElevatorByState component", () => {
     });
     mockAxios.get.mockResolvedValue({ data: elevators });
     render(
-      <MemoryRouter initialEntries={["/elevators/state/warning"]}>
+      <MemoryRouter initialEntries={["/state/warning"]}>
         <ElevatorByState />
       </MemoryRouter>,
     );
