@@ -7,9 +7,14 @@ type Props = {
 };
 
 export async function getFromAPI({ endpoint, getToken }: Props) {
-  const token = await getToken();
+  console.log("ENVIROMENT:", process.env.NODE_ENV);
 
-  const response = await axios.get(`https://localhost:3000${endpoint}`, {
+  const token = await getToken();
+  const domain = process.env.NODE_ENV === "production" ? "https://5738592.xyz" : "http://localhost";
+  const port = process.env.SERVER_PORT || 3000;
+  const url = `${domain}:${port}${endpoint}`;
+
+  const response = await axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

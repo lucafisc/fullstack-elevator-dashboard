@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  server:
+    environment:
+      - NODE_ENV=development
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    ports:
+      - "4242:4242"
+    environment:
+      - NODE_ENV=development

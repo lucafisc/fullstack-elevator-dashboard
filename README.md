@@ -9,6 +9,10 @@
 
 > On the frontend, React with TypeScript is employed, featuring user authentication via Auth0 and a mobile-first design. Frontend components are tested with Jest and the React Testing Library.
 
+## Deployment
+This project is deployed to an AWS EC2 instance using Docker Compose.
+### [View Live Demo](https://5738592.xyz/#/)
+
 ## Index
 
 - [Getting Started](#getting-started)
@@ -67,13 +71,22 @@ touch .env
 DB_URL=mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0
 ISSUER_BASE_URL=https://dev-a0oir8yzhmnp7jh3.us.auth0.com/
 TEST_USER_TOKEN=auth0|65fd62f37e87f7a8c0a5454f
+SERVER_PORT=3000
 ```
 
 ### Run docker compose
 
+To run the project in your local environment in `development`, run
 ```bash
-docker-compose up
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
+In development mode, the project will run using `HTTP`.
+
+The file `docker-compose.prod.yml` is used in the EC2 instance to run the app in `production` mode. This configuration enables `HTTPS` for secure connections. 
+
+Please note that the SSL keys and certificates required for HTTPS are stored securely on the EC2 instance. If you would like to run in production in your local environment you will have to provide your own ssl certificates and key for the client and the server. 
+
+
 
 ### Access dashboard
 You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided below to login.

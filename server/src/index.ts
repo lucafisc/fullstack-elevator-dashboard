@@ -12,7 +12,7 @@ import { createClient } from 'redis';
 
 // Load environment variables
 dotenv.config();
-const port = 3000;
+const port = process.env.SERVER_PORT || 3000;
 const mongoDB = process.env.DB_URL;
 const issuer = process.env.ISSUER_BASE_URL;
 const app: Express = express();
@@ -26,7 +26,7 @@ mongoose.connection.on("error", (error: Error) => console.error(error));
 let clientRedis: ReturnType<typeof createClient>;
 async function connectRedis() {
   clientRedis = await createClient({
-    url: `redis://host.docker.internal:6379`
+    url: `redis://cache:6379`
   })
   .on('error', err => console.log('Redis Client Error', err))
   .on('connect', () => console.log('Redis Client Connected'))
@@ -73,16 +73,27 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+console.log("NODE_ENV", process.env.NODE_ENV);
 // HTTPS server configuration
-const httpsOptions = {
-  key: fs.readFileSync("./ssl/private_key.pem"),
-  cert: fs.readFileSync("./ssl/certificate.crt"),
-};
+if (process.env.NODE_ENV === "production") {
+  // HTTPS server configuration
+  const httpsOptions = {
+    key: fs.readFileSync("./ssl/private_key.pem"),
+    cert: fs.readFileSync("./ssl/certificate.crt"),
+  };
 
-const httpsServer = https.createServer(httpsOptions, app);
+  // Create HTTPS server
+  const httpsServer = https.createServer(httpsOptions, app);
 
-if (require.main === module) {
-  httpsServer.listen(port, () => console.log(`HTTPS Server is running on port ${port}`));
+  // Start HTTPS server
+  if (require.main === module) {
+    httpsServer.listen(port, () => console.log(`HTTPS Server is running on port ${port}`));
+  }
+} else {
+  // Start HTTP server
+  if (require.main === module) {
+    app.listen(port, () => console.log(`HTTP Server is running on port ${port}`));
+  }
 }
 
 export { app, clientRedis };
