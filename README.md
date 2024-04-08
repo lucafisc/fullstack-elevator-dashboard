@@ -9,7 +9,7 @@
 
 ## Deployment
 This project is deployed to an AWS EC2 instance using Docker Compose.
-### [View Live Demo](https://5738592.xyz/#/) <font size="+3">Click Here!</font>
+### [View Live Demo](https://5738592.xyz/#/)
 
 ## Index
 
