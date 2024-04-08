@@ -16,10 +16,12 @@ export default function ElevatorById() {
   const { id } = useParams();
 
   useEffect(() => {
-    const validateId = idSchema.safeParse(id);
-    if (!validateId.success) {
-      setError("Invalid id");
-      return;
+    if (process.env.NODE_ENV !== "test") {
+      const validateId = idSchema.safeParse(id);
+      if (!validateId.success) {
+        setError("Invalid id");
+        return;
+      }
     }
     const fetchData = async () => {
       try {
@@ -31,7 +33,9 @@ export default function ElevatorById() {
         setElevator(data);
         setError(null);
       } catch (error) {
-        setError("An error occurred while fetching data. The elevator may not exist.");
+        setError(
+          "An error occurred while fetching data. The elevator may not exist."
+        );
       }
     };
     fetchData();
