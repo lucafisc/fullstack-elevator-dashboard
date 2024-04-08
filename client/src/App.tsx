@@ -4,12 +4,14 @@ import Home from "./components/pages/Home";
 import { Welcome } from "./components/pages/Welcome";
 
 function App() {
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect, logout, isLoading } = useAuth0();
 
   return (
     <>
       {isAuthenticated && user ? (
         <Home user={user} logout={logout} />
+      ) : isLoading ? (
+        <div>Loading...</div>
       ) : (
         <Welcome login={loginWithRedirect} />
       )}

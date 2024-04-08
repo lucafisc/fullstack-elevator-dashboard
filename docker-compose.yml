@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  cache:
+    image: redis:7.2.4-alpine
+    container_name: cache
+    ports:
+      - "6379:6379"
+    networks:
+      - elevator_network
+
+  server:
+    restart: always
+    build:
+      context: server
+      dockerfile: Dockerfile
+    command: |
+      npm start
+    container_name: server
+    environment:
+      - DB_URL=${DB_URL:?variable DB_URL is missing}
+      - ISSUER_BASE_URL=${ISSUER_BASE_URL:?variable ISSUER_BASE_URL is missing}
+      - TEST_USER_TOKEN=${TEST_USER_TOKEN:?variable TEST_USER_TOKEN is missing}
+    ports:
+      - "3000:3000"
+    links:
+      - cache
+    networks:
+      - elevator_network
+    depends_on:
+      - cache
+  
+  client:
+    restart: always
+    build:
+      context: client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "4242:4242"
+    depends_on:
+      - server
+    networks:
+      - elevator_network
+
+networks:
+  elevator_network:
+
+volumes:
+  redis_data:

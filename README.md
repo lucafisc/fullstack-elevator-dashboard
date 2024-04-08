@@ -3,9 +3,11 @@
 ![screenshot.png](./images/screenshot.png)
 
 
-> A full-stack web app implemented using Express with TypeScript for the backend, using Auth0 for safeguarding protected routes. MongoDB handles database storage. API endpoints tested with Jest.
+> The project uses Docker 🐳 and a docker-compose file to containerize all elements, ensuring easy deployment and consistency across environments.
 
-> React with TypeScript are used for the frontend, with user authentication using Auth0 and mobile-first design. Tested with Jest and React testing library.
+> For the backend, Express with TypeScript is implemented, utilizing Auth0 for protecting routes. MongoDB is used for storing data, and API endpoints are tested with Jest and cached with Redis.
+
+> On the frontend, React with TypeScript is employed, featuring user authentication via Auth0 and a mobile-first design. Frontend components are tested with Jest and the React Testing Library.
 
 ## Deployment
 This project is deployed to an AWS EC2 instance using Docker Compose.
@@ -16,8 +18,7 @@ This project is deployed to an AWS EC2 instance using Docker Compose.
 - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Clone this repository](#clone-this-repository)
-    - [Setting up the Server](#setting-up-the-server)
-    - [Setting up the Dashboard](#setting-up-the-dashboard)
+    - [Setting up](#setting-up)
     - [Running tests](#running-tests)
 - [API](#api)
     - [Introduction](#introduction)
@@ -46,8 +47,8 @@ This project is deployed to an AWS EC2 instance using Docker Compose.
 
 Before getting started, ensure you have the following prerequisites installed:
 
+- Docker and docker-compose
 - Node.js and npm (Node Package Manager)
-- MongoDB
 - Git
 
 ### Clone this repository
@@ -56,47 +57,39 @@ Before getting started, ensure you have the following prerequisites installed:
 git clone git@github.com:lucafisc/fullstack-elevator-dashboard.git
 ```
 
-## Setting up the Server
-
-### **Navigate to Server Directory:**
-
-```bash
-cd server
-```
+## Setting up
 
 ### Create .env File
 
-Create a new file named `.env` in the server directory and fill in the following values:
+Create a new file named `.env` in the root directory and fill in the following values:
 
 ```
 touch .env
 ```
 
 ```bash
-# Port number on which the server will run
-PORT=3000
-# MongoDB connection URL including credentials and database name
-DB_URL="mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0"
-# Test user token used for accessing endpoints without authentication
-TEST_USER_TOKEN="auth0|65fd62f37e87f7a8c0a5454f"
+DB_URL=mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0
+ISSUER_BASE_URL=https://dev-a0oir8yzhmnp7jh3.us.auth0.com/
+TEST_USER_TOKEN=auth0|65fd62f37e87f7a8c0a5454f
+SERVER_PORT=3000
 ```
 
-### Install Dependencies
+### Run docker compose
 
+To run the project in your local environment in `development`, run
 ```bash
-npm install
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
+In development mode, the project will run using `HTTP`.
 
-### Start server
+The file `docker-compose.prod.yml` is used in the EC2 instance to run the app in `production` mode. This configuration enables `HTTPS` for secure connections. 
 
-```tsx
-npm start
-```
+Please note that the SSL keys and certificates required for HTTPS are stored securely on the EC2 instance. If you would like to run in production in your local environment you will have to provide your own ssl certificates and key for the client and the server. 
 
-### Accessing Endpoints
 
-- Authenticated Routes: The main route **`/elevators`** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
-- Test Route: Use the **`/test`** route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
+
+### Access dashboard
+You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided below to login.
 
 ### Test Users for Protected Routes
 
@@ -105,38 +98,29 @@ npm start
 | skyward-peaks@test.com | ElapseJam88 |
 | elevate-industries@test.com | BlueStudio88 |
 
-## Setting up the Dashboard
+### Accessing Endpoints
+- Authenticated Routes: The main route **`/elevators`** is protected, and only authenticated users can access it. You need to include a valid **JWT token** in the **request header** to authenticate.
+- Test Route: Use the **`/test`** route to access all endpoints of the API using a dummy user to get sample data without needing to authenticate
 
-If you are still located in `/server` navigate back one directory with `cd ..` and enter the client directory:
-
-```
-cd client
-```
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Start the dashboard
-
-```
-npm run start
-```
-
-You will be able to visit the dashboard at [`http://localhost:4242/`](http://localhost:4242/) . Use one of the test users provided above to login.
 
 ## Running tests
 
-Tests can be run on the server directory using:
+Tests can be run on the server via Jest.
+Make sure you setup the .env file in the previous step.
+First install the necessary dependencies:
+
+```
+npm install
+```
 
 ```
 npm run test
 ```
 
-And in the client directory using the same command:
-
+And in the client directory, do the same:
+```
+npm install
+```
 ```
 npm run test
 ```
