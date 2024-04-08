@@ -7,6 +7,9 @@
 
 > React with TypeScript are used for the frontend, with user authentication using Auth0 and mobile-first design. Tested with Jest and React testing library.
 
+## Deployment
+This project is deployed to an AWS EC2 instance using Docker Compose.
+### [View Live Demo](https://5738592.xyz/#/) <font size="+3">Click Here!</font>
 
 ## Index
 
