@@ -17,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         audience: "this is a unique identifier",
         scope: "openid profile email",
       }}
+     
     >
       <HashRouter>
         <App />
