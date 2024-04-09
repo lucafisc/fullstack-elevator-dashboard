@@ -1,15 +1,30 @@
 services:
-  db:
+  mongo:
     image: mongo
+    container_name: "mongo"
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${DB_USER:?variable DB_USER is missing}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD:?variable DB_PASSWORD is missing}
-      - MONGO_INITDB_DATABASE=${DB_NAME:?variable DB_NAME is missing}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - "27017:27017"
+      - 27017:27017
     networks:
       - elevator_network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - elevator_network
+    depends_on:
+      - mongo
 
   server:
     restart: always
@@ -26,7 +41,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      - mongo
     networks:
       - elevator_network
   
