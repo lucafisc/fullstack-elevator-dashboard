@@ -2,12 +2,15 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo
-    container_name: "mongo"
+    build:
+      context: mongo
+      dockerfile: Dockerfile
+    container_name: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: elevator
     ports:
       - 27017:27017
     networks:
@@ -29,6 +32,7 @@ services:
       - elevator_network
     depends_on:
       - mongo
+
   cache:
     image: redis:7.2.4-alpine
     container_name: cache
@@ -80,6 +84,6 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./mongo_data
+      device: ./mongo/mongo_data
       o: bind
   redis_data:
