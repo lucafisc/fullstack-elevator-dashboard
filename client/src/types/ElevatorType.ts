@@ -2,7 +2,9 @@ import z from "zod";
 import { OperationalState, OutOfOrderState, WarningState } from "./StateTypes";
 import { chartSchema } from "./ChartType";
 
-const ElevatorType = z.enum(["Passenger", "Freight"]);
+const ElevatorTypeSchema = z.enum(["Passenger", "Freight"]);
+
+export const StateSchema = z.enum([OperationalState, OutOfOrderState, WarningState]);
 
 export const elevatorSchema = z.object({
   _id: z.string(),
@@ -12,12 +14,12 @@ export const elevatorSchema = z.object({
     deviceIdentificationNumber: z.string(),
     manufacturerName: z.string(),
     productionYear: z.number(),
-    elevatorType: ElevatorType,
+    elevatorType: ElevatorTypeSchema,
   }),
   operationalState: z
     .object({
       floorNumber: z.number(),
-      state: z.enum([OperationalState, OutOfOrderState, WarningState]),
+      state: StateSchema,
       warningMessage: z.string().optional(),
       reason: z.string().optional(),
     })

@@ -1,4 +1,4 @@
-import { User } from "@auth0/auth0-react";
+import { LogoutOptions, User } from "@auth0/auth0-react";
 import ElevatorOverview from "./ElevatorOverview";
 import { Route, Routes } from "react-router-dom";
 import ElevatorByState from "./ElevatorByState";
@@ -8,7 +8,7 @@ import Footer from "./Footer";
 
 type Props = {
   user: User;
-  logout: () => Promise<void>;
+  logout: (options?: LogoutOptions | undefined) => Promise<void>;
 };
 
 export default function Home({ user, logout }: Props) {

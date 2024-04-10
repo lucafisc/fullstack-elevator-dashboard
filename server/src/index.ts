@@ -2,15 +2,17 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+import https from "https";
+import fs from "fs";
 const { expressjwt: jwt } = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 import { elevatorsRouter } from "./routes/elevatorsRouter";
-import axios from "axios";
 import { getUserInfo, getTestUserInfo } from "./controllers/userController";
+import { createClient } from 'redis';
 
 // Load environment variables
 dotenv.config();
-const port = 3000;
+const port = process.env.SERVER_PORT || 3000;
 const mongoDB = process.env.DB_URL;
 const issuer = process.env.ISSUER_BASE_URL;
 const app: Express = express();
@@ -20,6 +22,22 @@ mongoose.set("strictPopulate", false);
 mongoose.Promise = Promise;
 mongoose.connect(mongoDB);
 mongoose.connection.on("error", (error: Error) => console.error(error));
+
+let clientRedis: ReturnType<typeof createClient>;
+async function connectRedis() {
+  const domain = process.env.NODE_ENV === 'test' ? 'localhost' : 'cache';
+  clientRedis = await createClient({
+    url: `redis://${domain}:6379`
+  })
+  .on('error', err => console.log('Redis Client Error', err))
+  .on('connect', () => console.log('Redis Client Connected'))
+  .connect();
+
+
+await clientRedis.set('key', 'ana');
+const value = await clientRedis.get('key');
+}
+connectRedis();
 
 // JWT middleware configuration
 const jwtCheck = jwt({
@@ -57,8 +75,26 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-if (require.main === module) {
-  app.listen(port, () => console.log(`Server is running on port ${port}`));
+// HTTPS server configuration
+if (process.env.NODE_ENV === "production") {
+  // HTTPS server configuration
+  const httpsOptions = {
+    key: fs.readFileSync("./ssl/private_key.pem"),
+    cert: fs.readFileSync("./ssl/certificate.crt"),
+  };
+
+  // Create HTTPS server
+  const httpsServer = https.createServer(httpsOptions, app);
+
+  // Start HTTPS server
+  if (require.main === module) {
+    httpsServer.listen(port, () => console.log(`HTTPS Server is running on port ${port}`));
+  }
+} else {
+  // Start HTTP server
+  if (require.main === module) {
+    app.listen(port, () => console.log(`HTTP Server is running on port ${port}`));
+  }
 }
 
-export default app;
+export { app, clientRedis };

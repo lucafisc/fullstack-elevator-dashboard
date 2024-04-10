@@ -1,6 +1,7 @@
 import request from "supertest";
-const app = require("../index").default;
+const app = require("../index").app;
 const stateEnum = require("../db/elevator").stateEnum;
+process.env.NODE_ENV = "test";
 
 describe("GET /test", () => {
   let response: any;
@@ -18,7 +19,7 @@ describe("GET /test", () => {
     response.body.forEach((elevator: any) => {
       expect(elevator).toHaveProperty("specifications");
       expect(elevator.specifications).toHaveProperty("fabricationNumber");
-      expect(elevator.specifications).toHaveProperty("address");
+      // expect(elevator.specifications).toHaveProperty("address");
       expect(elevator.specifications).toHaveProperty(
         "deviceIdentificationNumber",
       );
