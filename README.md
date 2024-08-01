@@ -9,10 +9,6 @@
 
 > On the frontend, React with TypeScript is employed, featuring user authentication via Auth0 and a mobile-first design. Frontend components are tested with Jest and the React Testing Library.
 
-## Deployment
-This project is deployed to an AWS EC2 instance using Docker Compose.
-### [View Live Demo](https://5738592.xyz/#/)
-
 ## Index
 
 - [Getting Started](#getting-started)
@@ -68,7 +64,7 @@ touch .env
 ```
 
 ```bash
-DB_URL=mongodb+srv://elevatorAdmin:zI7fzGxtJihdeKHm@cluster0.03yav5m.mongodb.net/elevator-dashboard?retryWrites=true&w=majority&appName=Cluster0
+DB_URL=your_mongo_connection_string
 ISSUER_BASE_URL=https://dev-a0oir8yzhmnp7jh3.us.auth0.com/
 TEST_USER_TOKEN=auth0|65fd62f37e87f7a8c0a5454f
 SERVER_PORT=3000
